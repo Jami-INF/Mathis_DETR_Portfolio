@@ -1,101 +1,128 @@
 ---
+const rawBase = import.meta.env.BASE_URL;
+const basePath = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
+
 const links = [
-  { name: "A propos", url: "#apropos" },
-  { name: "Galerie", url: "#galerie" },
-  { name: "Compétences", url: "#competences" },
-  { name: "Projets", url: "#projets" },
-  { name: "Me contacter", url: "#contact" },
+  { name: "A propos", url: `${basePath}` },
+  { name: "Galerie", url: `${basePath}galerie` },
+  { name: "Compétences", url: `${basePath}#competences` },
+  { name: "Projets", url: `${basePath}#projets` },
+  { name: "Me contacter", url: `${basePath}#contact` },
 ];
 ---
 
 <header class="fixed top-0 left-0 w-full z-50 bg-[#f8f6f2]/90 backdrop-blur-md border-b border-black/10">
   <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
     
-    <a href="#" class="font-display text-2xl font-black uppercase text-[#6f5647] tracking-tight z-50">
+    <a
+      href={basePath}
+      class="font-display text-2xl font-black uppercase text-[#6f5647] tracking-tight z-50"
+    >
       Mathis DETROUSSAT
     </a>
 
     <nav class="hidden md:flex gap-8">
-      {links.map(link => (
-        <a 
-          href={link.url} 
-          class="text-sm font-bold uppercase tracking-wider text-[#6f5647] hover:text-[#e7a7f4] transition-colors"
-        >
-          {link.name}
-        </a>
-      ))}
+      {links.map((link) => {
+        const isActive =
+          link.type === "page" &&
+          currentPath === galeriePath;
+
+        return (
+          <a
+            href={link.url}
+            class={`text-sm font-bold uppercase tracking-wider transition-colors ${
+              isActive
+                ? "text-[#e7a7f4]"
+                : "text-[#6f5647] hover:text-[#e7a7f4]"
+            }`}
+          >
+            {link.name}
+          </a>
+        );
+      })}
     </nav>
 
-    <!-- Bouton Hamburger (Mobile uniquement) -->
-    <button 
-      id="mobile-menu-btn" 
-      class="md:hidden relative z-50 p-2 text-[#6f5647] hover:text-[#e7a7f4] transition-colors" 
+    <button
+      id="mobile-menu-btn"
+      class="md:hidden relative z-50 p-2 text-[#6f5647] hover:text-[#e7a7f4] transition-colors"
       aria-label="Menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
     >
-      <!-- Icône Hamburger -->
       <svg id="icon-menu" class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
       </svg>
-      <!-- Icône Croix (Cachée par défaut) -->
+
       <svg id="icon-close" class="w-8 h-8 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
       </svg>
     </button>
-
   </div>
 
-  <!-- Menu Fullscreen (Mobile) -->
-  <div 
-    id="mobile-menu" 
+  <div
+    id="mobile-menu"
     class="absolute top-full left-0 w-full min-h-[calc(100vh-5rem)] bg-[#f8f6f2] z-40 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
   >
     <nav class="flex flex-col gap-8 text-center">
-      {links.map(link => (
-        <a 
-          href={link.url} 
-          class="mobile-link font-display text-4xl sm:text-5xl uppercase tracking-tight text-[#6f5647] hover:text-[#e7a7f4] transition-colors"
-        >
-          {link.name}
-        </a>
-      ))}
+      {links.map((link) => {
+        const isActive =
+          link.type === "page" &&
+          currentPath === galeriePath;
+
+        return (
+          <a
+            href={link.url}
+            class={`mobile-link font-display text-4xl sm:text-5xl uppercase tracking-tight transition-colors ${
+              isActive
+                ? "text-[#e7a7f4]"
+                : "text-[#6f5647] hover:text-[#e7a7f4]"
+            }`}
+          >
+            {link.name}
+          </a>
+        );
+      })}
     </nav>
   </div>
 </header>
 
 <script>
-  // Script Vanilla JS géré automatiquement par Astro
   const btn = document.getElementById('mobile-menu-btn');
   const menu = document.getElementById('mobile-menu');
   const iconMenu = document.getElementById('icon-menu');
   const iconClose = document.getElementById('icon-close');
   const mobileLinks = document.querySelectorAll('.mobile-link');
 
+  function openMenu() {
+    menu.classList.remove('opacity-0', 'pointer-events-none');
+    menu.classList.add('opacity-100', 'pointer-events-auto');
+    iconMenu.classList.add('hidden');
+    iconClose.classList.remove('hidden');
+    btn?.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMenu() {
+    menu.classList.remove('opacity-100', 'pointer-events-auto');
+    menu.classList.add('opacity-0', 'pointer-events-none');
+    iconMenu.classList.remove('hidden');
+    iconClose.classList.add('hidden');
+    btn?.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
+
   function toggleMenu() {
-    // Vérifie si le menu est déjà ouvert via l'opacité
     const isOpen = menu.classList.contains('opacity-100');
-    
     if (isOpen) {
-      // FERMER
-      menu.classList.remove('opacity-100', 'pointer-events-auto');
-      menu.classList.add('opacity-0', 'pointer-events-none');
-      iconMenu.classList.remove('hidden');
-      iconClose.classList.add('hidden');
-      document.body.style.overflow = ''; // Réactive le scroll
+      closeMenu();
     } else {
-      // OUVRIR
-      menu.classList.remove('opacity-0', 'pointer-events-none');
-      menu.classList.add('opacity-100', 'pointer-events-auto');
-      iconMenu.classList.add('hidden');
-      iconClose.classList.remove('hidden');
-      document.body.style.overflow = 'hidden'; // Bloque le scroll de la page derrière
+      openMenu();
     }
   }
 
-  // Écouteur sur le bouton
   btn?.addEventListener('click', toggleMenu);
 
-  // Fermer le menu si on clique sur un lien (utile pour les ancres #)
-  mobileLinks.forEach(link => {
-    link.addEventListener('click', toggleMenu);
+  mobileLinks.forEach((link) => {
+    link.addEventListener('click', closeMenu);
   });
 </script>

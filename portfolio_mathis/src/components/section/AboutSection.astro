@@ -6,7 +6,7 @@ import FloatingAsset from "./../decor/DessinVolant.astro";
 
 import photoMathis from "./../../assets/photos/molomolo2.jpg";
 import okHand from "./../../assets/element/okHand.png";
-import traitMarron from "./../../assets/element/traitMarron.png";
+import Quotes from "./../../assets/element/Quotes.png";
 import EtoileRose from "./../../assets/element/etoileRose.png";
 ---
 
@@ -18,7 +18,12 @@ import EtoileRose from "./../../assets/element/etoileRose.png";
       linear-gradient(to bottom, rgba(65, 56, 48, 0.22) 2px, transparent 2px);
       background-size: 46px 46px;"
   ></div>
-
+  <FloatingAsset
+    src={Quotes}
+    alt="Quote"
+    class="left-4 top-14 z-30 w-[60px] rotate-[-12deg] sm:left-8 sm:top-16 sm:w-[150px] lg:left-0 lg:top-10 lg:w-[120px]"
+    imgClass="h-auto w-full"
+  />
 
   <FloatingAsset
     src={EtoileRose}
