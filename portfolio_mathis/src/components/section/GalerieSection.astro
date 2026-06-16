@@ -1,18 +1,22 @@
 ---
+import { Image } from 'astro:assets';
+
 const images = Object.entries(
   import.meta.glob('/src/assets/galerie/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
     eager: true,
     import: 'default',
   })
-).map(([path, image]) => {
-  const fileName = path.split('/').pop() ?? '';
-  const title = fileName.replace(/\.[^/.]+$/, '');
+)
+  .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
+  .map(([path, image]) => {
+    const fileName = path.split('/').pop() ?? '';
+    const title = fileName.replace(/\.[^/.]+$/, '');
 
-  return {
-    src: image,
-    title,
-  };
-});
+    return {
+      src: image,
+      title,
+    };
+  });
 ---
 
 <section id="galerie" class="py-2 bg-[#f8f6f2]">
@@ -28,15 +32,13 @@ const images = Object.entries(
         Une sélection d’images prises lors d'événements auxquels j'ai participé.
       </p>
     </div>
-<p class="text-red-500">{images.length} images trouvées</p>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {images.map((image, index) => (
+      {images.map((image) => (
         <figure class="group overflow-hidden rounded-2xl bg-white/60 border border-black/10 shadow-sm">
-          <img
-            src={image.src.src}
+          <Image
+            src={image.src}
             alt={image.title}
-            loading="lazy"
             class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
 
