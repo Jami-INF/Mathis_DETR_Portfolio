@@ -1,0 +1,37 @@
+---
+interface Props {
+  line1?: string;
+  line2?: string;
+  sizeClass?: string;
+}
+
+const {
+  line1 = "CHARGÉ",
+  line2 = "EVENT",
+  sizeClass = "text-[4.8rem] sm:text-[7rem] lg:text-[10rem]",
+} = Astro.props;
+---
+
+<div class="relative z-20 w-fit select-none mb-20">
+  <div class="font-display origin-left scale-x-110 uppercase leading-[0.82] font-extrabold tracking-[-0.04em] text-[#edd1f1]">
+    <div
+      class={`relative z-10 ${sizeClass}`}
+      style="text-shadow:
+        -2px -2px 0 #000,
+         2px -2px 0 #000,
+        -2px  2px 0 #000,
+         2px  2px 0 #000;"
+    >
+      <div>{line1}</div>
+      <div>{line2}</div>
+    </div>
+
+    <div
+      aria-hidden="true"
+      class={`absolute inset-0 translate-x-2 translate-y-2 -z-10 text-black ${sizeClass}`}
+    >
+      <div>{line1}</div>
+      <div>{line2}</div>
+    </div>
+  </div>
+</div>

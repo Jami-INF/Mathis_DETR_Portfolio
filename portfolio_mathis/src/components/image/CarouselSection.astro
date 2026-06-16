@@ -1,0 +1,181 @@
+---
+import { Image } from "astro:assets";
+import type { ImageMetadata } from "astro";
+
+interface Slide {
+  src: string | ImageMetadata;
+  alt: string;
+}
+
+interface Props {
+  slides: Slide[];
+  title?: string;
+  subtitle?: string;
+}
+
+const {
+  slides = [],
+  title = "Quelques images",
+  subtitle = "Galerie",
+} = Astro.props;
+
+const carouselId = crypto.randomUUID();
+---
+
+<section
+  data-carousel={carouselId}
+  class="relative left-1/2 right-1/2 w-screen -translate-x-1/2 overflow-hidden bg-[#edd1f1] py-12 sm:py-16 lg:py-20"
+>
+  <div class="mx-auto w-full max-w-[1266px] px-6 sm:px-12 lg:px-16">
+    <div class="mb-8 flex items-end justify-between gap-6">
+      <div class="max-w-[560px]">
+        <p class="mb-2 text-sm uppercase tracking-[0.18em] text-[#6f5647]">
+          {subtitle}
+        </p>
+
+        <h2 class="text-2xl text-[#6f5647] sm:text-3xl lg:text-4xl">
+          {title}
+        </h2>
+      </div>
+
+      <!-- Boutons desktop -->
+      <div class="hidden items-center gap-3 sm:flex">
+        <button
+          type="button"
+          class="carousel-prev flex h-12 w-12 items-center justify-center rounded-full border border-[#d98fca] bg-[#f7d3ea] text-[#c85cb0] shadow-sm transition hover:bg-[#fbe3f1]"
+          aria-label="Image précédente"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="carousel-next flex h-12 w-12 items-center justify-center rounded-full border border-[#d98fca] bg-[#f7d3ea] text-[#c85cb0] shadow-sm transition hover:bg-[#fbe3f1]"
+          aria-label="Image suivante"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="relative">
+      <div
+        class="carousel-scroll flex gap-4 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-2 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden"
+        role="region"
+        aria-label="Carrousel de photos"
+      >
+        {slides.map((slide) => (
+          <article class="w-[85%] shrink-0 snap-start sm:w-[48%] lg:w-[32%]">
+            <div class="rounded-[28px] bg-[#f8f6f2] p-3 shadow-[0_10px_30px_rgba(111,86,71,0.10)]">
+              <div class="overflow-hidden rounded-[22px] bg-[#f3dbe8]">
+                {typeof slide.src === "string" ? (
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    loading="lazy"
+                    class="h-[280px] w-full object-cover sm:h-[320px] lg:h-[360px]"
+                  />
+                ) : (
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    class="h-[280px] w-full object-cover sm:h-[320px] lg:h-[360px]"
+                  />
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Boutons mobile -->
+      <div class="mt-6 flex items-center justify-center gap-3 sm:hidden">
+        <button
+          type="button"
+          class="carousel-prev flex h-11 w-11 items-center justify-center rounded-full border border-[#d98fca] bg-[#f7d3ea] text-[#c85cb0] shadow-sm transition hover:bg-[#fbe3f1]"
+          aria-label="Image précédente"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          class="carousel-next flex h-11 w-11 items-center justify-center rounded-full border border-[#d98fca] bg-[#f7d3ea] text-[#c85cb0] shadow-sm transition hover:bg-[#fbe3f1]"
+          aria-label="Image suivante"
+        >
+          <svg
+            viewBox="0 0 24 24"
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M9 6l6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script define:vars={{ carouselId }}>
+  const root = document.querySelector(
+    `[data-carousel="${carouselId}"]`
+  );
+
+  if (root) {
+    const scroller = root.querySelector(".carousel-scroll");
+
+    const scrollAmount = () => scroller?.clientWidth * 0.9 || 300;
+
+    root.querySelectorAll(".carousel-prev").forEach((button) => {
+      button.addEventListener("click", () => {
+        scroller?.scrollBy({
+          left: -scrollAmount(),
+          behavior: "smooth",
+        });
+      });
+    });
+
+    root.querySelectorAll(".carousel-next").forEach((button) => {
+      button.addEventListener("click", () => {
+        scroller?.scrollBy({
+          left: scrollAmount(),
+          behavior: "smooth",
+        });
+      });
+    });
+  }
+</script>

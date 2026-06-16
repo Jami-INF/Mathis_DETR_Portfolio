@@ -1,0 +1,59 @@
+---
+import BigTitle from "./../text/BigTitle.astro";
+import Title from "./../text/Title.astro";
+import SquarePhotoCard from "./../image/SquarePhotoCard.astro";
+import FloatingAsset from "./../decor/DessinVolant.astro";
+
+import photoMathis from "./../../assets/photos/molomolo.jpg";
+import okHand from "./../../assets/element/okHand.png";
+import traitMarron from "./../../assets/element/traitMarron.png";
+import hashTagRose from "./../../assets/element/hashTagRose.png";
+---
+
+<section class="relative mx-auto min-h-[520px] w-full max-w-[1266px] overflow-hidden bg-[#f8f6f2] sm:min-h-[620px] lg:min-h-[720px]">
+  <div class="relative z-10 px-6 pb-16 pt-10 sm:px-12 lg:px-16">
+    <FloatingAsset
+      src={traitMarron}
+      alt="Trait marron décoratif"
+      class="left-4 top-14 z-30 w-[120px] rotate-[-12deg] sm:left-8 sm:top-16 sm:w-[150px] lg:left-10 lg:top-20 lg:w-[180px]"
+      imgClass="h-auto w-full"
+    />
+
+    <FloatingAsset
+      src={hashTagRose}
+      alt="Hashtag décoratif"
+      class="right-4 top-8 z-30 w-[70px] rotate-[10deg] sm:right-8 sm:top-8 sm:w-[90px] lg:right-10 lg:top-10 lg:w-[110px]"
+      imgClass="h-auto w-full"
+    />
+
+    <SquarePhotoCard
+      src={photoMathis}
+      alt="Photo studio"
+    />
+
+    <FloatingAsset
+      src={okHand}
+      alt="Main décorative"
+      class="bottom-[-60px] left-[40%] z-30 w-[90px] rotate-[-8deg] sm:w-[150px] lg:w-[210px]"
+      imgClass="h-auto w-full"
+    />
+
+    <div class="relative z-20 mt-20 max-w-[620px]">
+      <BigTitle line1="CHARGÉ" line2="EVENT" />
+      <Title text="DETROUSSAT" />
+      <Title text="MATHIS" />
+    </div>
+  </div>
+
+  <div class="absolute bottom-0 right-6 z-20 flex flex-col gap-6 text-sm font-bold sm:right-14 sm:flex-row sm:gap-16 sm:text-base">
+    <!-- <div>
+      <p class="text-[#6f5647]">Téléphone :</p>
+      <p class="text-[#e7a7f4]">06 </p>
+    </div>-->
+
+    <div>
+      <p class="text-[#6f5647]">Email :</p>
+      <p class="break-all text-[#e7a7f4]">detroussat.mathis@yahoo.com</p>
+    </div>
+  </div>
+</section>

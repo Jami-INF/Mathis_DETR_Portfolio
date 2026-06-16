@@ -1,0 +1,23 @@
+---
+import CarouselSection from "../image/CarouselSection.astro";
+
+import img1 from "../../assets/photos/molomolo.jpg";
+import img2 from "../../assets/photos/molomolo2.jpg";
+import img3 from "../../assets/photos/molomolo3.jpg";
+import img4 from "../../assets/photos/molomolo4.jpg";
+import img5 from "../../assets/photos/molomolo2.jpg";
+import img6 from "../../assets/photos/mathis.jpg";
+
+const slides = [
+  { src: img1, alt: "Projet 1" },
+  { src: img2, alt: "Projet 2" },
+  { src: img3, alt: "Projet 3" },
+  { src: img4, alt: "Projet 4" },
+  { src: img5, alt: "Projet 5" },
+  { src: img6, alt: "Projet 6" },
+];
+---
+<section class="mx-auto w-full overflow-hidden bg-[#edd1f1]">
+
+    <CarouselSection slides={slides} />
+</section>

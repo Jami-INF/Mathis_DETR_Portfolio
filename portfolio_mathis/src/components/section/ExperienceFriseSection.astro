@@ -1,0 +1,77 @@
+---
+import BigTitle from "./../text/BigTitle.astro";
+import FriseItem from "./../item/FriseItem.astro";
+
+const experiences = [
+  {
+    title: "Chargé d’événementiel",
+    company: "Hall 32, Clermont-Ferrand",
+    period: "Sept 2025 - Juillet 2026",
+  },
+  {
+    title: "Co-fondateur",
+    company: "Molo Molo Records",
+    period: "Sept 2025 - En cours",
+  },
+  {
+    title: "Co-fondateur",
+    company: "Master Juice Production",
+    period: "Juin 2024 - En cours",
+  },
+  {
+    title: "Commercial export",
+    company: "Flauraud, Clermont-Ferrand",
+    period: "Sept 2023 - Aout 2024",
+  },
+];
+---
+
+<section class="relative overflow-hidden bg-white py-16 lg:py-24">
+  <div class="absolute inset-0 bg-[#f3d7f4] [clip-path:polygon(100%_0,100%_100%,35%_100%)]"></div>
+
+  <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <BigTitle
+      line1="Mes expériences"
+      line2=""
+      sizeClass="text-[2.25rem] sm:text-[3rem] lg:text-[4.5rem]"
+    />
+
+    <!-- Mobile / tablette -->
+    <div class="mt-12 flex flex-col gap-10 lg:hidden">
+      {experiences.map((experience) => (
+        <FriseItem
+          period={experience.period}
+          title={experience.title}
+          school={experience.company}
+        />
+      ))}
+    </div>
+
+  <!-- Desktop -->
+<div class="relative hidden lg:block mt-20">
+
+  <!-- Ligne -->
+  <div class="absolute left-1/2 top-0 h-full w-1 -translate-x-1/2 bg-[#d98fca]"></div>
+
+  <div class="space-y-20">
+    {experiences.map((experience, index) => (
+      <div
+        class={`relative flex ${
+          index % 2 === 0 ? "justify-start" : "justify-end"
+        }`}
+      >
+        <!-- Point -->
+        <div class="absolute left-1/2 top-8 h-5 w-5 -translate-x-1/2 rounded-full bg-[#d98fca] border-4 border-white"></div>
+
+        <div class="w-[45%]">
+          <FriseItem
+            period={experience.period}
+            title={experience.title}
+            school={experience.company}
+          />
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+</section>

@@ -1,0 +1,19 @@
+---
+import { Image } from "astro:assets";
+
+interface Props {
+  src: any;
+  alt?: string;
+  class?: string;
+}
+
+const {
+  src,
+  alt = "",
+  class: className = "",
+} = Astro.props;
+---
+
+<div class={`absolute ${className}`}>
+  <Image src={src} alt={alt} />
+</div>

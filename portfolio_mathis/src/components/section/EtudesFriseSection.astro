@@ -1,0 +1,50 @@
+---
+import BigTitle from "./../text/BigTitle.astro";
+import FriseItem from "./../item/FriseItem.astro";
+
+const studies = [
+  {
+    period: "2026 - 2028",
+    title: "Master Communication & management événementiel",
+    school: "EFAP, Lyon",
+  },
+  {
+    period: "2025 - 2026",
+    title: "Bachelor Chargé de projet événementiel",
+    school: "CCI Formation, Clermont-Ferrand",
+  },
+  {
+    period: "2021 - 2023",
+    title: "BTS Gestion des Petites et Moyennes Entreprises",
+    school: "GFS, Clermont-Ferrand",
+  },
+  {
+    period: "2023 - 2024",
+    title: "Bachelor Marketing & communication",
+    school: "GFS, Clermont-Ferrand",
+  },
+];
+---
+
+<section class="relative overflow-hidden bg-white py-16">
+    <div class="absolute inset-0 bg-[#f3d7f4] lg:[clip-path:polygon(25%_0,75%_0,100%_50%,75%_100%,25%_100%,0_50%)]"></div>
+
+
+  <div class="relative z-10 mx-auto max-w-6xl px-6">
+    <BigTitle
+      line1="Mes études"
+      line2=""
+      sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"
+    />
+
+    <div class="grid grid-cols-1 gap-16 md:grid-cols-2">
+      {studies.map((study) => (
+        <FriseItem
+          period={study.period}
+          title={study.title}
+          school={study.school}
+        />
+      ))}
+    </div>
+  </div>
+</section>

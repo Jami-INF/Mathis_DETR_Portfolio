@@ -1,0 +1,26 @@
+---
+interface Props {
+  period: string;
+  title: string;
+  school: string;
+}
+
+const { period, title, school } = Astro.props;
+---
+
+<div class="relative">
+  <div class="mb-6 h-0 border-t-[10px] border-dashed border-[#735545]"></div>
+
+  <div class="flex gap-4 text-[#735545]">
+    <div class="relative w-6">
+      <div class="absolute left-1/2 top-0 h-20 w-[3px] -translate-x-1/2 bg-[#efc9f5]"></div>
+      <div class="absolute left-1/2 top-0 h-5 w-5 -translate-x-1/2 rounded-full border-4 border-[#efc9f5] bg-white"></div>
+    </div>
+
+    <div>
+      <p class="text-2xl font-extrabold">{period}</p>
+      <p class="text-xl font-semibold leading-tight">{title}</p>
+      <p class="text-lg font-semibold">{school}</p>
+    </div>
+  </div>
+</div>

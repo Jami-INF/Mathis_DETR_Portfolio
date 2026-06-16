@@ -1,0 +1,15 @@
+---
+interface Props {
+  text?: string;
+}
+
+const {
+  text = "MATHIS",
+} = Astro.props;
+---
+
+<div class="relative z-20 mt-3">
+  <h2 class="font-display uppercase leading-[0.9] tracking-tight text-[#6f5647] text-3xl sm:text-4xl lg:text-5xl">
+    <span class="block">{text}</span>
+  </h2>
+</div>

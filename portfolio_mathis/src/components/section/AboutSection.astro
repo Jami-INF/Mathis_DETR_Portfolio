@@ -1,0 +1,50 @@
+---
+import BigTitle from "./../text/BigTitle.astro";
+import Text from "./../text/Text.astro";
+import RoundPhotoCard from "./../image/RoundPhotoCard.astro";
+import FloatingAsset from "./../decor/DessinVolant.astro";
+
+import photoMathis from "./../../assets/photos/molomolo2.jpg";
+import okHand from "./../../assets/element/okHand.png";
+import traitMarron from "./../../assets/element/traitMarron.png";
+import EtoileRose from "./../../assets/element/etoileRose.png";
+---
+
+<section class="mt-20 relative mx-auto w-full max-w-[1266px] overflow-hidden bg-[#f8f6f2]">
+  <div
+    class="absolute inset-0 opacity-[0.08]"
+    style="background-image:
+      linear-gradient(to right, rgba(65, 56, 48, 0.22) 2px, transparent 2px),
+      linear-gradient(to bottom, rgba(65, 56, 48, 0.22) 2px, transparent 2px);
+      background-size: 46px 46px;"
+  ></div>
+
+
+  <FloatingAsset
+    src={EtoileRose}
+    alt="Hashtag décoratif"
+    class="right-4 bottom-8 sm:bottom-8 lg:bottom-10 z-30 w-[70px] rotate-[10deg] sm:right-8 sm:w-[90px] lg:right-10 lg:w-[110px]"
+    imgClass="h-auto w-full"
+  />
+
+  <div class="relative z-10 grid grid-cols-1 gap-10 px-6 pb-24 pt-10 sm:px-12 lg:grid-cols-2 lg:items-center lg:gap-16 lg:px-16">
+    <div class="relative z-20 max-w-[560px]">
+      <BigTitle
+        line1="ME"
+        line2="CONCERNANT"
+        sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"
+      />
+
+      <Text
+        text="Actuellement en Bachelor chargé de projet événementiel auprès de la CCI Formation et en alternance au sein du Hall 32, je suis à la recherche de la continuité de mes études afin de développer les compétences acquises durant mon parcours scolaire et mon travail en entreprise."
+      />
+    </div>
+
+    <div class="relative z-20 flex justify-center lg:justify-end">
+      <RoundPhotoCard
+        src={photoMathis}
+        alt="Photo studio"
+      />
+    </div>
+  </div>
+</section>
