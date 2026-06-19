@@ -1,0 +1,61 @@
+---
+// SwotSection.astro
+// Assemble le titre, la roue centrale et les 4 cartes.
+
+import SwotCard from "./../SwotCard.astro";
+import BigTitle from './../text/BigTitle.astro';
+
+import SwotCircle from "./../SwotCircle.astro";
+
+interface SwotData {
+  forces: string[];
+  faiblesses: string[];
+  opportunites: string[];
+  menaces: string[];
+}
+
+interface Props {
+  title?: string;
+  data?: SwotData;
+}
+
+const {
+  title = "MON SWOT",
+  data = {
+    forces: ["Gestion de projet", "Polyvalence opérationnelle", "Culture événementiel & musique"],
+    faiblesses: ["Risque de dispersion", "Susceptible"],
+    opportunites: [
+      "Public du court métrage",
+      "Développer l'image du label",
+      "Ventes supplémentaires (merch)",
+    ],
+    menaces: ["Événements concurrents", "Risques financiers", "Problèmes techniques"],
+  },
+} = Astro.props;
+---
+
+<section class="w-full bg-[#f8f6f2] px-4 py-12 sm:px-6 lg:px-10">
+  <div class="mx-auto max-w-6xl">
+    <BigTitle line1={title} line2="" sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
+
+
+    <div class="grid items-center gap-5 sm:gap-6 lg:grid-cols-[1fr_auto_1fr]">
+      <!-- Colonne gauche -->
+      <div class="flex flex-col justify-between gap-5 sm:gap-6">
+        <SwotCard variant="forces" title="Force" items={data.forces} />
+        <SwotCard variant="faiblesses" title="Faiblesses" items={data.faiblesses} />
+      </div>
+
+      <!-- Roue centrale (en tête sur mobile) -->
+      <div class="order-first flex justify-center py-2 lg:order-none lg:py-0">
+        <SwotCircle />
+      </div>
+
+      <!-- Colonne droite -->
+      <div class="flex flex-col justify-between gap-5 sm:gap-6">
+        <SwotCard variant="opportunites" title="Opportunités" items={data.opportunites} />
+        <SwotCard variant="menaces" title="Menaces" items={data.menaces} />
+      </div>
+    </div>
+  </div>
+</section>

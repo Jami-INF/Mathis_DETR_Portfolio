@@ -1,0 +1,50 @@
+---
+// SwotCircle.astro
+// La roue centrale S / W / O / T en SVG.
+// 100% scalable (viewBox) : on la dimensionne avec une classe Tailwind sur la largeur.
+// Quadrants alignés sur la grille des cartes :
+//   haut-gauche  S (Force)        haut-droite  O (Opportunités)
+//   bas-gauche   W (Faiblesses)   bas-droite   T (Menaces)
+
+interface Props {
+  class?: string;
+}
+const { class: className = "w-44 sm:w-56 lg:w-64" } = Astro.props;
+
+const colors = {
+  forces: "#e7a7f4",
+  faiblesses: "#c4a898",
+  opportunites: "#7a5b46",
+  menaces: "#4a3528",
+};
+---
+
+<svg
+  viewBox="0 0 200 200"
+  class={`drop-shadow-md ${className}`}
+  role="img"
+  aria-label="Roue SWOT : Forces, Faiblesses, Opportunités, Menaces"
+>
+  <!-- Quartiers -->
+  <path d="M100 100 L100 10 A90 90 0 0 0 10 100 Z" fill={colors.forces} />
+  <path d="M100 100 L100 10 A90 90 0 0 1 190 100 Z" fill={colors.opportunites} />
+  <path d="M100 100 L190 100 A90 90 0 0 1 100 190 Z" fill={colors.menaces} />
+  <path d="M100 100 L100 190 A90 90 0 0 1 10 100 Z" fill={colors.faiblesses} />
+
+  <!-- Séparateurs fins -->
+  <g stroke="#faf6ef" stroke-width="3">
+    <line x1="100" y1="10" x2="100" y2="190" />
+    <line x1="10" y1="100" x2="190" y2="100" />
+  </g>
+
+  <!-- Lettres -->
+  <g fill="#ffffff" font-family="system-ui, sans-serif" font-weight="800" font-size="34" text-anchor="middle" dominant-baseline="central">
+    <text x="61" y="61">S</text>
+    <text x="139" y="61">O</text>
+    <text x="139" y="139">T</text>
+    <text x="61" y="139">W</text>
+  </g>
+
+  <!-- Moyeu central -->
+  <circle cx="100" cy="100" r="16" fill="#faf6ef" />
+</svg>

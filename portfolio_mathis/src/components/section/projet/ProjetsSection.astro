@@ -1,0 +1,81 @@
+---
+import ProjetCard from './../../item/ProjetCard.astro';
+import GalerieSection from './../GalerieSection.astro';
+import BigTitle from "./../../text/BigTitle.astro";
+import Title from "./../../text/Title.astro";
+import type { ImageMetadata } from 'astro';
+
+export interface Projet {
+  title: string;
+  title2: string;
+  description: string;
+  missions?: string[];
+  /** Image de couverture importée (optionnelle). */
+  image?: ImageMetadata;
+  imageAlt?: string;
+  /**
+   * Dossier de galerie associé. Si absent, on le déduit du titre
+   * (ex: "Hall 32" -> "hall-32"). La galerie ne s'affiche que s'il
+   * existe des images dans /src/assets/galerie/<dossier>/.
+   */
+  galerie?: string;
+}
+
+interface Props {
+  projets?: Projet[];
+  title?: string;
+  eyebrow?: string;
+}
+
+const {
+  projets = [],
+} = Astro.props;
+
+// "Hall 32" -> "hall-32"
+const slugify = (value: string) =>
+  value
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+---
+
+<section id="projets" class="bg-[#f8f6f2]">
+  
+  <div class="max-w-7xl mx-auto px-6 pt-16">
+    <BigTitle
+      line1="Mes projets"
+      line2=""
+      sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"
+    />
+
+  {
+    projets.map((projet, index) => {
+      const folder = projet.galerie ?? slugify(projet.title);
+      return (
+        <Fragment>
+          <div class="max-w-7xl mx-auto px-6 py-14">
+            <ProjetCard
+              title={projet.title}
+              title2={projet.title2}
+              description={projet.description}
+              missions={projet.missions}
+              image={projet.image}
+              imageAlt={projet.imageAlt}
+              reverse={index % 2 === 1}
+            />
+          </div>
+
+
+          {/* Ne s'affiche que si le dossier contient des images. */}
+          <GalerieSection path={folder} eyebrow="Galerie" title={projet.title} description="" />
+          <hr class="w-[90%] mx-auto border-0 h-1 bg-[#EED1F1] rounded-full" />
+
+        </Fragment>
+      );
+    })
+  }
+
+  <div class="pb-16" />
+</section>

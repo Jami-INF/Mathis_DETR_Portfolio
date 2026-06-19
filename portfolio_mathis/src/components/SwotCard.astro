@@ -1,0 +1,115 @@
+---
+// SwotCard.astro
+// Une carte d'un quadrant SWOT : icône, lettre filigrane, titre et liste de points.
+// Tout est piloté par les props, et les couleurs sont des chaînes Tailwind COMPLÈTES
+// (indispensable pour que le JIT ne purge pas les classes dynamiques).
+
+export type SwotVariant = "forces" | "faiblesses" | "opportunites" | "menaces" | "rose";
+
+interface Props {
+  variant: SwotVariant;
+  title: string;
+  items: string[];
+  /** Lettre affichée en filigrane. Optionnelle : une valeur par défaut existe par variante. */
+  letter?: string;
+  class?: string;
+}
+
+const { variant, title, items, letter, class: className = "" } = Astro.props;
+
+const styles: Record<
+  SwotVariant,
+  { letter: string; card: string; icon: string; title: string; marker: string; watermark: string }
+> = {
+  forces: {
+    letter: "S",
+    card: "bg-[#fdf0ff]/95 ring-[#e7a7f4]",
+    icon: "bg-[#e7a7f4] text-white",
+    title: "text-[#b05ec0]",
+    marker: "bg-[#e7a7f4]",
+    watermark: "text-[#e7a7f4]/50",
+  },
+  faiblesses: {
+    letter: "W",
+    card: "bg-[#faf6f0]/95 ring-[#c4a898]",
+    icon: "bg-[#c4a898] text-white",
+    title: "text-[#9a7a6a]",
+    marker: "bg-[#c4a898]",
+    watermark: "text-[#c4a898]/60",
+  },
+  opportunites: {
+    letter: "O",
+    card: "bg-[#f5f0ea]/95 ring-[#d9cabd]",
+    icon: "bg-[#7a5b46] text-white",
+    title: "text-[#7a5b46]",
+    marker: "bg-[#7a5b46]",
+    watermark: "text-[#cdbdae]/80",
+  },
+  menaces: {
+    letter: "T",
+    card: "bg-[#f1ece8]/95 ring-[#ccbdb1]",
+    icon: "bg-[#4a3528] text-white",
+    title: "text-[#4a3528]",
+    marker: "bg-[#4a3528]",
+    watermark: "text-[#c4b4a7]/80",
+  },
+  rose: {
+    letter: "✦",
+    card: "bg-[#fdf0ff]/95 ring-[#e7a7f4]",
+    icon: "bg-[#e7a7f4] text-white",
+    title: "text-[#b060c8]",
+    marker: "bg-[#e7a7f4]",
+    watermark: "text-[#e7a7f4]/50",
+  },
+};
+
+const s = styles[variant];
+const big = letter ?? s.letter;
+---
+
+<article
+  class={`relative flex flex-col overflow-hidden rounded-2xl p-5 sm:p-6 shadow-sm ring-1 ${s.card} ${className}`}
+>
+  <!-- Lettre SWOT en filigrane -->
+  <span
+    aria-hidden="true"
+    class={`pointer-events-none absolute -bottom-4 -right-1 select-none font-black leading-none text-[5.5rem] sm:text-[7rem] ${s.watermark}`}
+  >
+    {big}
+  </span>
+
+  <!-- En-tête : icône + titre -->
+  <header class="relative z-10 mb-4 flex items-center gap-3">
+    <span class={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${s.icon}`}>
+      <slot name="icon">
+        <!-- Icône par défaut selon la variante -->
+        {variant === "forces" && (
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9z"/></svg>
+        )}
+        {variant === "faiblesses" && (
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        )}
+        {variant === "opportunites" && (
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.7V17a2 2 0 0 1-2 2"/><path d="M14 14.7V17a2 2 0 0 0 2 2"/><path d="M18 2H6v7a6 6 0 0 0 12 0z"/></svg>
+        )}
+        {variant === "menaces" && (
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        )}
+        {variant === "rose" && (
+          <svg viewBox="0 0 24 24" class="h-6 w-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        )}
+      </slot>
+    </span>
+    <h3 class={`text-xl font-extrabold ${s.title}`}>{title}</h3>
+  </header>
+
+  <!-- Liste de points -->
+  <ul class="relative z-10 space-y-2 text-slate-800">
+    {items.map((item) => (
+      <li class="flex gap-2.5">
+        <span class={`mt-2 h-1.5 w-1.5 shrink-0 rounded-full ${s.marker}`} aria-hidden="true"></span>
+        <span class="font-semibold leading-snug">{item}</span>
+      </li>
+    ))}
+  </ul>
+</article>

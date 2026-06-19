@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjetsSection from '../components/section/projet/ProjetsSection.astro'
+import hall32 from '../assets/projets/hall32.jpg';
+import molomolo from '../assets/projets/molomolo.jpg';
+
+const projets = [
+  {
+    title: 'Hall 32',
+    title2: '',
+    description: "Au Hall 32 nous accueillons divers événements tel que des salons et séminaires, je suis en charge de différents dossiers, allant de la demande de devis, la recherche de prestataires, ainsi que l’organisation et le suivi des événements.",
+    missions: ['Devis & commande', 'Recherche de prestataires', "Suivi d'événement", 'Régie et accompagnement'],
+    image: hall32,
+    imageAlt: 'Conférence au Hall 32',
+  },
+  {
+    title: 'Molomolo',
+    title2: 'Records',
+    description:
+    "En septembre 2026 nous avons créé le label Molo Molo Records, avec l’objectif d’accompagner les artistes locaux dans leurs développement. Nous organisons également plusieurs événements au cours de l’année pour promouvoir le label et nos artistes, en collaborant également avec différentes associations locale.", 
+    missions: [
+        'Devis & commande',
+        'Recherche de prestataires',
+        "Suivi d'événement",
+        'Régie et accompagnement',
+    ],
+    image: molomolo,
+    imageAlt: 'Evenement organisé par molomolo',
+    },
+];
+---
+
+<Layout title="Chargé Event">
+    <ProjetsSection projets={projets} />
+</Layout>

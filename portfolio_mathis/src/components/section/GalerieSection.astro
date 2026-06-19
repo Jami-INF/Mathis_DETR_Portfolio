@@ -1,52 +1,90 @@
 ---
 import { Image } from 'astro:assets';
 
-const images = Object.entries(
-  import.meta.glob('/src/assets/galerie/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}', {
-    eager: true,
-    import: 'default',
-  })
-)
-  .sort(([pathA], [pathB]) => pathA.localeCompare(pathB))
-  .map(([path, image]) => {
-    const fileName = path.split('/').pop() ?? '';
-    const title = fileName.replace(/\.[^/.]+$/, '');
+interface Props {
+  /**
+   * Sous-dossier de /src/assets/galerie à afficher (ex: "hall-32").
+   * Vide / absent => toutes les images de tous les dossiers.
+   */
+  path?: string;
+  eyebrow?: string;
+  title?: string;
+  description?: string;
+  /** Masque l'en-tête (utile quand la galerie est imbriquée sous un projet). */
+  showHeader?: boolean;
+}
 
-    return {
-      src: image,
-      title,
-    };
+const {
+  path,
+  eyebrow = 'Galerie',
+  title = 'Quelques images',
+  description = "Une sélection d'images prises lors d'événements auxquels j'ai participé.",
+  showHeader = true,
+} = Astro.props;
+
+// import.meta.glob exige un motif STATIQUE : on charge donc tout (racine + sous-dossiers)
+// une seule fois, puis on filtre par `path` à l'exécution.
+// Les deux motifs garantissent la prise en compte de la racine ET des sous-dossiers ;
+// les clés étant des chemins absolus, les doublons éventuels sont dédoublonnés.
+const modules = import.meta.glob(
+  [
+    '/src/assets/galerie/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}',
+    '/src/assets/galerie/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}',
+  ],
+  { eager: true, import: 'default' }
+);
+
+const base = '/src/assets/galerie';
+const folder = path?.replace(/^\/+|\/+$/g, ''); // retire les "/" de début/fin
+
+const images = Object.entries(modules)
+  .filter(([p]) => !folder || p.startsWith(`${base}/${folder}/`))
+  .sort(([a], [b]) => a.localeCompare(b))
+  .map(([p, image]) => {
+    const fileName = p.split('/').pop() ?? '';
+    const title = fileName.replace(/\.[^/.]+$/, '');
+    return { src: image, title };
   });
 ---
 
-<section id="galerie" class="py-2 bg-[#f8f6f2]">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="mb-12">
-      <p class="text-sm font-bold uppercase tracking-[0.2em] text-[#e7a7f4] mb-3">
-        Galerie
-      </p>
-      <h2 class="font-display text-4xl md:text-5xl uppercase tracking-tight text-[#6f5647] mb-4">
-        Quelques images
-      </h2>
-      <p class="max-w-2xl text-base md:text-lg text-[#6f5647]/80 leading-relaxed">
-        Une sélection d’images prises lors d'événements auxquels j'ai participé.
-      </p>
-    </div>
+{
+  images.length > 0 && (
+    <section
+      id={folder ? `galerie-${folder}` : 'galerie'}
+      class="py-12 bg-[#f8f6f2]"
+    >
+      <div class="max-w-7xl mx-auto px-6">
+        {showHeader && (
+          <div class="mb-12">
+            <p class="text-sm font-bold uppercase tracking-[0.2em] text-[#e7a7f4] mb-3">
+              {eyebrow}
+            </p>
+            <h2 class="font-display text-4xl md:text-5xl uppercase tracking-tight text-[#6f5647] mb-4">
+              {title}
+            </h2>
+            {description && (
+              <p class="max-w-2xl text-base md:text-lg text-[#6f5647]/80 leading-relaxed">
+                {description}
+              </p>
+            )}
+          </div>
+        )}
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {images.map((image) => (
-        <figure class="group overflow-hidden rounded-2xl bg-white/60 border border-black/10 shadow-sm">
-          <Image
-            src={image.src}
-            alt={image.title}
-            class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-[1.03]"
-          />
-
-          <figcaption class="px-5 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#6f5647] border-t border-black/5 bg-[#f8f6f2]/80">
-            {image.title}
-          </figcaption>
-        </figure>
-      ))}
-    </div>
-  </div>
-</section>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {images.map((image) => (
+            <figure class="group overflow-hidden rounded-2xl bg-white/60 ring-1 ring-[#eed1f1] shadow-md shadow-[#e7a7f4]/40">
+              <Image
+                src={image.src}
+                alt={image.title}
+                class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+              />
+              <figcaption class="px-5 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#6f5647] bg-[#f8f6f2]/80">
+                {image.title}
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
