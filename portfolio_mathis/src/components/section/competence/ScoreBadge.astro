@@ -1,0 +1,15 @@
+---
+// src/components/section/competence/ScoreBadge.astro
+const { score } = Astro.props;
+
+const styles = {
+  Expert: "bg-[#be5bb0] text-white",
+  "Maîtrise": "bg-[#f0c8ec] text-[#7a3f72]",
+  Autonome: "bg-[#f7e8f7] text-[#8a5e82]",
+  "Supervisé": "bg-transparent text-[#9b7a93] ring-1 ring-[#e2c4de]",
+};
+---
+
+<span class={`rounded-full px-2.5 py-0.5 text-xs font-semibold ${styles[score]}`}>
+  {score}
+</span>

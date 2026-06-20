@@ -1,0 +1,36 @@
+---
+// src/components/section/competence/CompetenceBloc.astro
+import ScoreBadge from "./ScoreBadge.astro";
+import LevelBar from "./LevelBar.astro";
+
+const { bloc } = Astro.props;
+---
+
+<article class="overflow-hidden rounded-3xl bg-white ring-1 ring-[#f1ddef] shadow-lg shadow-[#e7a7f4]/30">
+  <header class="flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-[#e9a7e4] to-[#c98be0] px-6 py-5">
+    <div>
+      <h3 class="font-display text-2xl uppercase tracking-wide text-white sm:text-3xl">
+        {bloc.title}
+      </h3>
+      <p class="text-sm text-white/85">{bloc.sousTitre}</p>
+    </div>
+    <span class="shrink-0 rounded-full bg-white/25 px-4 py-1.5 text-sm font-semibold text-white backdrop-blur">
+      Moyenne {bloc.moyenne}/5
+    </span>
+  </header>
+
+  <ul class="divide-y divide-[#f5e7f3]">
+    {bloc.competences.map((c) => (
+      <li class="grid gap-3 px-6 py-4 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6">
+        <div class="min-w-0">
+          <div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span class="font-semibold text-[#4a3528]">{c.nom}</span>
+            <ScoreBadge score={c.score} />
+          </div>
+          <p class="mt-1 text-sm text-[#9b8794]">{c.exemple}</p>
+        </div>
+        <LevelBar niveau={c.niveau} />
+      </li>
+    ))}
+  </ul>
+</article>

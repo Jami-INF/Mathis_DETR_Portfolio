@@ -1,0 +1,15 @@
+---
+// src/components/section/skills/SkillsSection.astro
+import SkillCard from "./SkillCard.astro";
+import BigTitle from "./../../../text/BigTitle.astro";
+
+const { title, skills = [] } = Astro.props;
+const slug = title.toLowerCase().replace(/\s+/g, "-");
+---
+
+<section aria-labelledby={`${slug}-title`} class="mx-40 sm:mb-28">
+    <BigTitle line1={title} line2='' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
+    <div class="grid gap-10 sm:grid-cols-3 sm:gap-12">
+        {skills.map((skill) => <SkillCard skill={skill} />)}
+    </div>
+</section>

@@ -1,0 +1,14 @@
+---
+// src/components/section/competence/LevelBar.astro
+const { niveau } = Astro.props;
+
+const pct = Math.min(100, Math.max(0, (niveau / 5) * 100));
+const label = String(niveau).replace(".", ",");
+---
+
+<div class="flex items-center gap-3 sm:w-48">
+  <div class="h-2 flex-1 overflow-hidden rounded-full bg-[#f4e3f2]">
+    <div class="h-full rounded-full bg-gradient-to-r from-[#e29bdb] to-[#c267bd]" style={`width:${pct}%`}></div>
+  </div>
+  <span class="w-9 text-right font-display text-lg text-[#b5479e]">{label}</span>
+</div>
