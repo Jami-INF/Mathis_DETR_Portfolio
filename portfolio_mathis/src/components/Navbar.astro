@@ -5,10 +5,19 @@ const basePath = rawBase.endsWith("/") ? rawBase : `${rawBase}/`;
 const links = [
   { name: "A propos", url: `${basePath}` },
   { name: "Galerie", url: `${basePath}galerie` },
-  { name: "Compétences", url: `${basePath}competences` },
   { name: "Projets", url: `${basePath}projets` },
+  { name: "Evenements", url: `${basePath}evenements` },
+  { name: "Compétences", url: `${basePath}competences` },
   { name: "Me contacter", url: `${basePath}#contact` },
 ];
+// Chemin de la page actuellement affichée, sans "/" final
+const current = Astro.url.pathname.replace(/\/+$/, "") || "/";
+
+// true si le lien correspond à la page courante
+const isActive = (url: string) => {
+  const path = url.split("#")[0].replace(/\/+$/, "") || "/";
+  return current === path;
+};
 ---
 
 <header class="fixed top-0 left-0 w-full z-50 bg-[#f8f6f2]/90 backdrop-blur-md border-b border-black/10">
@@ -22,24 +31,19 @@ const links = [
     </a>
 
     <nav class="hidden md:flex gap-8">
-      {links.map((link) => {
-        const isActive =
-          link.type === "page" &&
-          currentPath === galeriePath;
-
-        return (
-          <a
-            href={link.url}
-            class={`text-sm font-bold uppercase tracking-wider transition-colors ${
-              isActive
-                ? "text-[#e7a7f4]"
-                : "text-[#6f5647] hover:text-[#e7a7f4]"
-            }`}
-          >
-            {link.name}
-          </a>
-        );
-      })}
+      {links.map((link) => (
+        <a
+          href={link.url}
+          aria-current={isActive(link.url) ? "page" : undefined}
+          class={`text-sm font-bold uppercase tracking-wider transition-colors ${
+            isActive(link.url)
+              ? "text-[#e7a7f4]"
+              : "text-[#6f5647] hover:text-[#e7a7f4]"
+          }`}
+        >
+          {link.name}
+        </a>
+      ))}
     </nav>
 
     <button
@@ -64,24 +68,19 @@ const links = [
     class="absolute top-full left-0 w-full min-h-[calc(100vh-5rem)] bg-[#f8f6f2] z-40 flex flex-col items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300 md:hidden"
   >
     <nav class="flex flex-col gap-8 text-center">
-      {links.map((link) => {
-        const isActive =
-          link.type === "page" &&
-          currentPath === galeriePath;
-
-        return (
-          <a
-            href={link.url}
-            class={`mobile-link font-display text-4xl sm:text-5xl uppercase tracking-tight transition-colors ${
-              isActive
-                ? "text-[#e7a7f4]"
-                : "text-[#6f5647] hover:text-[#e7a7f4]"
-            }`}
-          >
-            {link.name}
-          </a>
-        );
-      })}
+      {links.map((link) => (
+        <a
+          href={link.url}
+          aria-current={isActive(link.url) ? "page" : undefined}
+          class={`mobile-link font-display text-4xl sm:text-5xl uppercase tracking-tight transition-colors ${
+            isActive(link.url)
+              ? "text-[#e7a7f4]"
+              : "text-[#6f5647] hover:text-[#e7a7f4]"
+          }`}
+        >
+          {link.name}
+        </a>
+      ))}
     </nav>
   </div>
 </header>

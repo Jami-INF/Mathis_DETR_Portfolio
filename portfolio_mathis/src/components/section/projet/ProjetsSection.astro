@@ -9,13 +9,17 @@ export interface Projet {
   title: string;
   title2: string;
   description: string;
+  /** Rôle occupé (ex: "Co-fondateur & chargé de projet"). */
+  role?: string;
   missions?: string[];
-  /** Image de couverture importée (optionnelle). */
+  /** Résultats / réalisations concrètes. */
+  results?: string[];
+  /** Image de couverture importée (optionnelle : placeholder si absente). */
   image?: ImageMetadata;
   imageAlt?: string;
   /**
-   * Dossier de galerie associé. Si absent, on le déduit du titre
-   * (ex: "Hall 32" -> "hall-32"). La galerie ne s'affiche que s'il
+   * Dossier de galerie associé (ex: "Hall 32", "MJ Prod").
+   * Si absent, on le déduit du titre. La galerie ne s'affiche que s'il
    * existe des images dans /src/assets/galerie/<dossier>/.
    */
   galerie?: string;
@@ -23,12 +27,16 @@ export interface Projet {
 
 interface Props {
   projets?: Projet[];
+  /** Titre principal de la section (ex: "Mes projets", "Mes événements"). */
   title?: string;
-  eyebrow?: string;
+  /** id de la <section> (pour l'ancrage). */
+  sectionId?: string;
 }
 
 const {
   projets = [],
+  title = 'Mes projets',
+  sectionId = 'projets',
 } = Astro.props;
 
 // "Hall 32" -> "hall-32"
@@ -41,11 +49,11 @@ const slugify = (value: string) =>
     .replace(/^-+|-+$/g, '');
 ---
 
-<section id="projets" class="bg-[#f8f6f2]">
-  
+<section id={sectionId} class="bg-[#f8f6f2]">
+
   <div class="max-w-7xl mx-auto px-6 pt-16">
     <BigTitle
-      line1="Mes projets"
+      line1={title}
       line2=""
       sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"
     />
@@ -60,7 +68,9 @@ const slugify = (value: string) =>
               title={projet.title}
               title2={projet.title2}
               description={projet.description}
+              role={projet.role}
               missions={projet.missions}
+              results={projet.results}
               image={projet.image}
               imageAlt={projet.imageAlt}
               reverse={index % 2 === 1}

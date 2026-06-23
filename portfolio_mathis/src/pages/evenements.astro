@@ -1,0 +1,92 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjetsSection from '../components/section/projet/ProjetsSection.astro';
+
+// Couvertures de projets
+import hall32 from '../assets/projets/hall32.jpg';
+import molomolo from '../assets/projets/molomolo.jpg';
+import masterJuice from '../assets/galerie/MJ Prod/Le lieu dit.jpeg';
+
+// Couvertures d'événements
+import coverInterludes from '../assets/galerie/Molo Molo Interludes/Les interludes du court.jpeg';
+import coverSansFacon from '../assets/galerie/Molo Molo Sans Facon 1/Sans Façon 1.jpeg';
+import coverVolcamp from '../assets/galerie/Hall 32/Salon Volcamp.jpeg';
+import coverFestivals from '../assets/galerie/MJ Prod/Off du Hellfest.jpeg';
+
+// ─────────────────────────────────────────────────────────────
+// ÉVÉNEMENTS — temps forts auxquels j'ai participé
+// Chaque événement : visuel + galerie associée
+// ─────────────────────────────────────────────────────────────
+const evenements = [
+  {
+    title: 'Les Interludes',
+    title2: 'du Court',
+    role: 'Organisation & régie — Molo Molo Records',
+    description:
+      "Les Interludes du Court : un rendez-vous porté par Molo Molo Records, mêlant projections et performances live. De l'organisation à la régie le jour J, un événement pensé pour mettre en valeur les artistes et le public local.",
+    missions: [
+      "Organisation et logistique de l'événement",
+      'Régie et accueil des artistes',
+      'Communication autour de la soirée',
+    ],
+    image: coverInterludes,
+    imageAlt: 'Les Interludes du Court',
+    galerie: 'Molo Molo Interludes',
+  },
+  {
+    title: 'Sans Façon',
+    title2: '#1',
+    role: 'Organisation & régie — Molo Molo Records',
+    description:
+      "La première édition des soirées « Sans Façon » de Molo Molo Records : une soirée concert pensée pour faire découvrir nos artistes dans une ambiance conviviale et sans chichis.",
+    missions: [
+      'Programmation et organisation',
+      'Régie son & lumières',
+      'Accompagnement des artistes',
+    ],
+    image: coverSansFacon,
+    imageAlt: 'Soirée Sans Façon #1',
+    galerie: 'Molo Molo Sans Facon 1',
+  },
+  {
+    title: 'Volcamp',
+    title2: '& salons au Hall 32',
+    role: 'Suivi & régie — Hall 32',
+    description:
+      "Salons et séminaires accueillis au Hall 32 (dont Volcamp et Altern'Up) : de la demande de devis au suivi des prestataires, jusqu'à la régie le jour de l'événement.",
+    missions: [
+      'Devis et sélection des prestataires',
+      "Suivi de l'organisation",
+      "Régie le jour de l'événement",
+    ],
+    image: coverVolcamp,
+    imageAlt: 'Salon Volcamp au Hall 32',
+    galerie: 'Hall 32',
+  },
+  {
+    title: 'Festivals',
+    title2: 'Master Juice',
+    role: 'Régie son & lumières — Master Juice Production',
+    description:
+      "Les festivals et scènes sur lesquels Master Juice Production est intervenue, du Off du Hellfest aux scènes locales. Régie technique, montage de scène et accompagnement des artistes en conditions live.",
+    missions: [
+      'Régie son & lumières',
+      'Montage et exploitation de scène',
+      'Accompagnement artistique sur le terrain',
+    ],
+    image: coverFestivals,
+    imageAlt: 'Off du Hellfest — Master Juice Production',
+    galerie: 'MJ Prod',
+  },
+];
+---
+
+<Layout title="Projets & événements | Mathis DETROUSSAT">
+  <main class="pt-20">
+    <ProjetsSection
+      projets={evenements}
+      title="Mes événements"
+      sectionId="evenements"
+    />
+  </main>
+</Layout>

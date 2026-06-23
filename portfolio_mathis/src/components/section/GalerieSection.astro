@@ -1,5 +1,5 @@
 ---
-import { Image } from 'astro:assets';
+import { Image, getImage } from 'astro:assets';
 
 interface Props {
   /**
@@ -37,7 +37,7 @@ const modules = import.meta.glob(
 const base = '/src/assets/galerie';
 const folder = path?.replace(/^\/+|\/+$/g, ''); // retire les "/" de début/fin
 
-const images = Object.entries(modules)
+const entries = Object.entries(modules)
   .filter(([p]) => !folder || p.startsWith(`${base}/${folder}/`))
   .sort(([a], [b]) => a.localeCompare(b))
   .map(([p, image]) => {
@@ -45,12 +45,23 @@ const images = Object.entries(modules)
     const title = fileName.replace(/\.[^/.]+$/, '');
     return { src: image, title };
   });
+
+// Version haute résolution pour l'affichage agrandi (lightbox).
+const images = await Promise.all(
+  entries.map(async ({ src, title }) => {
+    const full = await getImage({ src, width: 1600, quality: 85 });
+    return { src, title, full: full.src };
+  })
+);
+
+const galleryId = folder ? `galerie-${folder}` : 'galerie';
 ---
 
 {
   images.length > 0 && (
     <section
-      id={folder ? `galerie-${folder}` : 'galerie'}
+      id={galleryId}
+      data-galerie
       class="py-12 bg-[#f8f6f2]"
     >
       <div class="max-w-7xl mx-auto px-6">
@@ -71,13 +82,36 @@ const images = Object.entries(modules)
         )}
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {images.map((image) => (
-            <figure class="group overflow-hidden rounded-2xl bg-white/60 ring-1 ring-[#eed1f1] shadow-md shadow-[#e7a7f4]/40">
-              <Image
-                src={image.src}
-                alt={image.title}
-                class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-              />
+          {images.map((image, i) => (
+            <figure
+              data-reveal
+              style={`--reveal-delay:${(i % 3) * 90}ms`}
+              class="group relative overflow-hidden rounded-2xl bg-white/60 ring-1 ring-[#eed1f1] shadow-md shadow-[#e7a7f4]/40"
+            >
+              <button
+                type="button"
+                class="block w-full cursor-zoom-in focus:outline-none focus-visible:ring-2 focus-visible:ring-[#e7a7f4]"
+                data-lightbox-trigger
+                data-full={image.full}
+                data-title={image.title}
+                aria-label={`Agrandir : ${image.title}`}
+              >
+                <Image
+                  src={image.src}
+                  alt={image.title}
+                  class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+                />
+                <span class="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#6f5647]/0 opacity-0 transition-all duration-300 group-hover:bg-[#6f5647]/30 group-hover:opacity-100 motion-reduce:transition-none">
+                  <span class="rounded-full bg-white/90 p-3 text-[#6f5647] shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      <line x1="11" y1="8" x2="11" y2="14" />
+                      <line x1="8" y1="11" x2="14" y2="11" />
+                    </svg>
+                  </span>
+                </span>
+              </button>
               <figcaption class="px-5 py-4 text-sm font-bold uppercase tracking-[0.12em] text-[#6f5647] bg-[#f8f6f2]/80">
                 {image.title}
               </figcaption>
@@ -85,6 +119,181 @@ const images = Object.entries(modules)
           ))}
         </div>
       </div>
+
+      {/* Lightbox */}
+      <div
+        data-lightbox
+        class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/85 p-4 opacity-0 backdrop-blur-sm transition-opacity duration-300"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Image agrandie"
+      >
+        <button
+          type="button"
+          data-lightbox-close
+          class="absolute right-4 top-4 z-10 rounded-full bg-white/15 p-2 text-white transition hover:bg-white/30"
+          aria-label="Fermer"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        <button
+          type="button"
+          data-lightbox-prev
+          class="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/15 p-3 text-white transition hover:bg-white/30 md:left-6"
+          aria-label="Image précédente"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6" />
+          </svg>
+        </button>
+        <button
+          type="button"
+          data-lightbox-next
+          class="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/15 p-3 text-white transition hover:bg-white/30 md:right-6"
+          aria-label="Image suivante"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+
+        <figure class="flex max-h-full max-w-5xl flex-col items-center">
+          <img
+            data-lightbox-img
+            src=""
+            alt=""
+            class="max-h-[80vh] w-auto rounded-lg object-contain shadow-2xl transition-transform duration-300"
+          />
+          <figcaption
+            data-lightbox-caption
+            class="mt-4 text-sm font-bold uppercase tracking-[0.12em] text-white/80"
+          />
+        </figure>
+      </div>
+
+      <script>
+        function initGalerie(section: HTMLElement) {
+          if (section.dataset.galerieReady) return;
+          section.dataset.galerieReady = 'true';
+
+          // --- Apparition au scroll ---
+          const revealables = section.querySelectorAll<HTMLElement>('[data-reveal]');
+          const prefersReduced = window.matchMedia(
+            '(prefers-reduced-motion: reduce)'
+          ).matches;
+
+          if (prefersReduced || !('IntersectionObserver' in window)) {
+            revealables.forEach((el) => el.classList.add('is-visible'));
+          } else {
+            const observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach((entry) => {
+                  if (entry.isIntersecting) {
+                    entry.target.classList.add('is-visible');
+                    observer.unobserve(entry.target);
+                  }
+                });
+              },
+              { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+            );
+            revealables.forEach((el) => observer.observe(el));
+          }
+
+          // --- Lightbox ---
+          const lightbox = section.querySelector<HTMLElement>('[data-lightbox]');
+          if (!lightbox) return;
+
+          const imgEl = lightbox.querySelector<HTMLImageElement>('[data-lightbox-img]');
+          const captionEl = lightbox.querySelector<HTMLElement>('[data-lightbox-caption]');
+          const triggers = Array.from(
+            section.querySelectorAll<HTMLButtonElement>('[data-lightbox-trigger]')
+          );
+          let current = 0;
+
+          const show = (index: number) => {
+            current = (index + triggers.length) % triggers.length;
+            const btn = triggers[current];
+            if (!imgEl || !captionEl) return;
+            imgEl.src = btn.dataset.full ?? '';
+            imgEl.alt = btn.dataset.title ?? '';
+            captionEl.textContent = btn.dataset.title ?? '';
+          };
+
+          const open = (index: number) => {
+            show(index);
+            lightbox.classList.remove('hidden');
+            lightbox.classList.add('flex');
+            requestAnimationFrame(() => lightbox.classList.add('opacity-100'));
+            document.body.style.overflow = 'hidden';
+          };
+
+          const close = () => {
+            lightbox.classList.remove('opacity-100');
+            document.body.style.overflow = '';
+            const finish = () => {
+              lightbox.classList.add('hidden');
+              lightbox.classList.remove('flex');
+            };
+            setTimeout(finish, 300);
+          };
+
+          triggers.forEach((btn, i) =>
+            btn.addEventListener('click', () => open(i))
+          );
+
+          lightbox
+            .querySelector('[data-lightbox-close]')
+            ?.addEventListener('click', close);
+          lightbox
+            .querySelector('[data-lightbox-prev]')
+            ?.addEventListener('click', () => show(current - 1));
+          lightbox
+            .querySelector('[data-lightbox-next]')
+            ?.addEventListener('click', () => show(current + 1));
+
+          // Clic sur le fond (hors image / boutons) => fermeture
+          lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) close();
+          });
+
+          document.addEventListener('keydown', (e) => {
+            if (lightbox.classList.contains('hidden')) return;
+            if (e.key === 'Escape') close();
+            if (e.key === 'ArrowLeft') show(current - 1);
+            if (e.key === 'ArrowRight') show(current + 1);
+          });
+        }
+
+        document
+          .querySelectorAll<HTMLElement>('[data-galerie]')
+          .forEach(initGalerie);
+      </script>
+
+      <style>
+        [data-reveal] {
+          opacity: 0;
+          transform: translateY(28px) scale(0.98);
+          transition:
+            opacity 0.7s ease,
+            transform 0.7s ease;
+          transition-delay: var(--reveal-delay, 0ms);
+        }
+        [data-reveal].is-visible {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [data-reveal] {
+            opacity: 1;
+            transform: none;
+            transition: none;
+          }
+        }
+      </style>
     </section>
   )
 }
