@@ -45,3 +45,4 @@ Desktop.ini
 
 # Misc
 *.local
+.claude/launch.json

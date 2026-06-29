@@ -6,7 +6,7 @@ import Text from "./../../text/Text.astro";
 const { blocs = [] } = Astro.props;
 ---
 
-<section aria-labelledby="blocs-title" class="mx-40 sm:mb-28">
+<section aria-labelledby="blocs-title" class="mx-auto max-w-7xl px-4 mb-16 sm:px-6 sm:mb-28 lg:px-8">
     <BigTitle line1='Blocs de ' line2='compétences' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
     <div class="space-y-6">
         {blocs.map((bloc) => <CompetenceBloc bloc={bloc} />)}
