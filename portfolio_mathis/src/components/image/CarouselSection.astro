@@ -99,6 +99,9 @@ const carouselId = crypto.randomUUID();
                   <Image
                     src={slide.src}
                     alt={slide.alt}
+                    width={1000}
+                    quality={72}
+                    loading="lazy"
                     class="h-[280px] w-full object-cover sm:h-[320px] lg:h-[360px]"
                   />
                 )}

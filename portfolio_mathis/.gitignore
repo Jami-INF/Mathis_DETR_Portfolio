@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# sauvegarde des photos originales (avant filigrane/redimensionnement)
+.image-originals-backup/

@@ -99,6 +99,9 @@ const galleryId = folder ? `galerie-${folder}` : 'galerie';
                 <Image
                   src={image.src}
                   alt={image.title}
+                  width={800}
+                  quality={70}
+                  loading="lazy"
                   class="w-full h-80 object-cover transition-transform duration-500 group-hover:scale-[1.05] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
                 />
                 <span class="pointer-events-none absolute inset-0 flex items-center justify-center bg-[#6f5647]/0 opacity-0 transition-all duration-300 group-hover:bg-[#6f5647]/30 group-hover:opacity-100 motion-reduce:transition-none">
