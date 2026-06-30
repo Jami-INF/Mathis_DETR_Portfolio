@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://mathis-detroussat.fr/sitemap-index.xml
