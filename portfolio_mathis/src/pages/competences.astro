@@ -5,6 +5,7 @@ import Layout from '../layouts/Layout.astro';
 
 import CompetenceSection from "../components/section/competence/CompetenceSection.astro";
 import SkillsSection from "../components/section/competence/skills/SkillsSection.astro";
+import ToolsSection from "../components/section/competence/ToolsSection.astro";
 
 const blocs = [
   {
@@ -42,23 +43,43 @@ const blocs = [
     ],
   },
 ];
+// niveau : "Débutant" | "Intermédiaire" | "Avancé" | "Expert"
 const hardSkills = [
-  { title: "Gestion de projet", niveau: 76, items: ["Outils de gestion de projet", "Maîtrise de la conception d'un événement", "Planification", "Gestion budgétaire"] },
-  { title: "Logistique & technique", niveau: 88, items: ["Gestion des prestataires", "Régie technique", "Gestion de la chaîne logistique"] },
-  { title: "Marketing", niveau: 76, items: ["Outils de création graphique", "Marketing digital", "Outils de billetterie & CRM"] },
+  { title: "Gestion de projet", icon: "projet", niveau: "Avancé", items: ["Outils de gestion de projet", "Maîtrise de la conception d'un événement", "Planification", "Gestion budgétaire"] },
+  { title: "Logistique & technique", icon: "logistique", niveau: "Expert", items: ["Gestion des prestataires", "Régie technique", "Gestion de la chaîne logistique"] },
+  { title: "Marketing", icon: "marketing", niveau: "Avancé", items: ["Outils de création graphique", "Marketing digital", "Outils de billetterie & CRM"] },
 ];
- 
+
 const softSkills = [
-  { title: "Flexibilité", niveau: 85, items: ["Habitude du changement", "Différentes entreprises", "Plusieurs missions différentes"] },
-  { title: "Travail en équipe", niveau: 80, items: ["Travail en équipe avec répartition des tâches"] },
-  { title: "Apprentissage", niveau: 90, items: ["Apprentissage en formations", "Apprentissage des méthodes de travail"] },
+  { title: "Flexibilité", icon: "flexibilite", niveau: "Expert", items: ["Habitude du changement", "Différentes entreprises", "Plusieurs missions différentes"] },
+  { title: "Travail en équipe", icon: "equipe", niveau: "Avancé", items: ["Travail en équipe avec répartition des tâches"] },
+  { title: "Apprentissage", icon: "apprentissage", niveau: "Expert", items: ["Apprentissage en formations", "Apprentissage des méthodes de travail"] },
+];
+
+// À VALIDER / AJUSTER : outils réellement utilisés par Mathis.
+const outils = [
+  { categorie: "Création & contenu", items: ["Canva", "CapCut", "Suite Adobe"] },
+  { categorie: "Billetterie & CRM", items: ["Shotgun", "Weezevent", "HelloAsso"] },
+  { categorie: "Gestion & bureautique", items: ["Notion", "Trello", "Microsoft Office", "Google Workspace"] },
+  { categorie: "Réseaux sociaux", items: ["Instagram", "Meta Business Suite", "TikTok"] },
 ];
 ---
 
 <Layout title="Compétences | Mathis DETROUSSAT">
-  <main class="pt-20">
-    <SkillsSection title="Hard skills" skills={hardSkills} />
-    <SkillsSection title="Soft skills" skills={softSkills} />
-    <CompetenceSection blocs={blocs} />
+  <main class="relative overflow-hidden pt-20">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 opacity-[0.06]"
+      style="background-image:
+        linear-gradient(to right, rgba(65, 56, 48, 0.5) 2px, transparent 2px),
+        linear-gradient(to bottom, rgba(65, 56, 48, 0.5) 2px, transparent 2px);
+        background-size: 46px 46px;"
+    ></div>
+    <div class="relative z-10">
+      <SkillsSection title="Hard skills" skills={hardSkills} variant="rose" />
+      <SkillsSection title="Soft skills" skills={softSkills} variant="brun" />
+      <ToolsSection title="Logiciels & outils" groupes={outils} />
+      <CompetenceSection blocs={blocs} />
+    </div>
   </main>
 </Layout>

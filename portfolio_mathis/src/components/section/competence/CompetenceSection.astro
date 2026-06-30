@@ -1,14 +1,23 @@
 ---
 // src/components/section/competence/CompetenceSection.astro
 import CompetenceBloc from "./CompetenceBloc.astro";
+import LevelLegend from "./LevelLegend.astro";
 import BigTitle from "./../../text/BigTitle.astro";
-import Text from "./../../text/Text.astro";
+import FloatingAsset from "./../../decor/DessinVolant.astro";
+import EtoileRose from "./../../../assets/element/etoileRose.png";
 const { blocs = [] } = Astro.props;
 ---
 
-<section aria-labelledby="blocs-title" class="mx-auto max-w-7xl px-4 mb-16 sm:px-6 sm:mb-28 lg:px-8">
+<section aria-labelledby="blocs-title" class="relative mx-auto max-w-7xl px-4 mb-16 sm:px-6 sm:mb-28 lg:px-8">
+    <FloatingAsset
+        src={EtoileRose}
+        alt=""
+        class="right-2 -top-4 z-0 w-[52px] rotate-[-10deg] opacity-80 sm:right-6 sm:w-[72px] lg:w-[90px]"
+        imgClass="h-auto w-full"
+    />
     <BigTitle line1='Blocs de ' line2='compétences' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
-    <div class="space-y-6">
-        {blocs.map((bloc) => <CompetenceBloc bloc={bloc} />)}
+    <LevelLegend />
+    <div class="relative z-10 space-y-6">
+        {blocs.map((bloc, i) => <CompetenceBloc bloc={bloc} index={i} />)}
     </div>
 </section>

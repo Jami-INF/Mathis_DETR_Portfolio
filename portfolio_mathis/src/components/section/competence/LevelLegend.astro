@@ -1,0 +1,23 @@
+---
+// src/components/section/competence/LevelLegend.astro
+import ScoreBadge from "./ScoreBadge.astro";
+
+const niveaux = [
+  { score: "Supervisé", desc: "Réalisé avec accompagnement" },
+  { score: "Autonome", desc: "Réalisé seul, de façon fiable" },
+  { score: "Maîtrise", desc: "Maîtrisé, capable d'optimiser" },
+  { score: "Expert", desc: "Référent, capable de former" },
+];
+---
+
+<div class="mb-6 rounded-3xl bg-white/80 px-5 py-4 ring-1 ring-[#f1ddef]">
+  <p class="mb-3 text-xs font-bold uppercase tracking-wider text-[#b05ec0]">Échelle de niveaux</p>
+  <ul class="grid gap-x-6 gap-y-2 sm:grid-cols-2 lg:grid-cols-4">
+    {niveaux.map((n) => (
+      <li class="flex items-center gap-2">
+        <ScoreBadge score={n.score} />
+        <span class="text-sm text-[#9b8794]">{n.desc}</span>
+      </li>
+    ))}
+  </ul>
+</div>

@@ -2,14 +2,24 @@
 // src/components/section/skills/SkillsSection.astro
 import SkillCard from "./SkillCard.astro";
 import BigTitle from "./../../../text/BigTitle.astro";
+import FloatingAsset from "./../../../decor/DessinVolant.astro";
+import EtoileRose from "./../../../../assets/element/etoileRose.png";
+import EtoileMarron from "./../../../../assets/element/etoileMarron.png";
 
-const { title, skills = [] } = Astro.props;
+const { title, skills = [], variant = "rose" } = Astro.props;
 const slug = title.toLowerCase().replace(/\s+/g, "-");
+const etoile = variant === "brun" ? EtoileMarron : EtoileRose;
 ---
 
-<section aria-labelledby={`${slug}-title`} class="mx-auto max-w-7xl px-4 mb-16 sm:px-6 sm:mb-28 lg:px-8">
-    <BigTitle line1={title} line2='' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
-    <div class="grid gap-10 sm:grid-cols-3 sm:gap-12">
-        {skills.map((skill) => <SkillCard skill={skill} />)}
-    </div>
+<section aria-labelledby={`${slug}-title`} class="relative mx-auto max-w-7xl px-4 mb-16 sm:px-6 sm:mb-28 lg:px-8">
+  <FloatingAsset
+    src={etoile}
+    alt=""
+    class="right-2 -top-4 z-0 w-[52px] rotate-[12deg] opacity-80 sm:right-6 sm:w-[72px] lg:w-[88px]"
+    imgClass="h-auto w-full"
+  />
+  <BigTitle line1={title} line2='' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
+  <div class="relative z-10 grid gap-8 sm:grid-cols-3 sm:gap-8 lg:gap-10">
+    {skills.map((skill) => <SkillCard skill={skill} variant={variant} />)}
+  </div>
 </section>
