@@ -4,6 +4,8 @@ import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 const basePath = import.meta.env.BASE_URL;
 const faviconUrl = `${basePath}favicon.ico`;
+const faviconSvgUrl = `${basePath}favicon.svg`;
+const appleTouchIconUrl = `${basePath}apple-touch-icon.png`;
 
 const siteTitle = "Mathis DETROUSSAT — Portfolio";
 const siteDescription =
@@ -25,8 +27,9 @@ const ogImage = `${siteUrl}og-image.jpg`;
 
     <link rel="canonical" href={siteUrl} />
 
-    <link rel="icon" type="image/x-icon" href="{faviconUrl}" />
-    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" type="image/x-icon" href={faviconUrl} sizes="any" />
+    <link rel="icon" type="image/svg+xml" href={faviconSvgUrl} />
+    <link rel="apple-touch-icon" href={appleTouchIconUrl} />
 
     <meta property="og:locale" content="fr_FR" />
     <meta property="og:type" content="website" />
