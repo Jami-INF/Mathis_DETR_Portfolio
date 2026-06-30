@@ -2,16 +2,15 @@
 import { Image, getImage } from 'astro:assets';
 
 interface Props {
-  /**
-   * Sous-dossier de /src/assets/galerie à afficher (ex: "hall-32").
-   * Vide / absent => toutes les images de tous les dossiers.
-   */
+  /** Sous-dossier de /src/assets/galerie à afficher. Vide/absent = tous les dossiers. */
   path?: string;
   eyebrow?: string;
   title?: string;
   description?: string;
   /** Masque l'en-tête (utile quand la galerie est imbriquée sous un projet). */
   showHeader?: boolean;
+  /** Nombre de photos affichées avant le bouton « Voir plus ». 0 = toutes. */
+  initial?: number;
 }
 
 const {
