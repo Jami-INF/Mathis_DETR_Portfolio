@@ -20,6 +20,8 @@ const {
   title = 'Quelques images',
   description = "Une sélection d'images prises lors d'événements auxquels j'ai participé.",
   showHeader = true,
+  /** Nombre de photos affichées avant le bouton « Voir plus ». 0 = toutes. */
+  initial = 0,
 } = Astro.props;
 
 // import.meta.glob exige un motif STATIQUE : on charge donc tout (racine + sous-dossiers)
@@ -55,6 +57,10 @@ const images = await Promise.all(
 );
 
 const galleryId = folder ? `galerie-${folder}` : 'galerie';
+
+// Affichage progressif : on masque les photos au-delà de `initial`.
+const limit = initial > 0 ? initial : images.length;
+const hiddenCount = Math.max(0, images.length - limit);
 ---
 
 {
@@ -85,8 +91,12 @@ const galleryId = folder ? `galerie-${folder}` : 'galerie';
           {images.map((image, i) => (
             <figure
               data-reveal
+              data-extra={i >= limit ? '' : undefined}
               style={`--reveal-delay:${(i % 3) * 90}ms`}
-              class="group relative overflow-hidden rounded-2xl bg-white/60 ring-1 ring-[#eed1f1] shadow-md shadow-[#e7a7f4]/40"
+              class:list={[
+                'group relative overflow-hidden rounded-2xl bg-white/60 ring-1 ring-[#eed1f1] shadow-md shadow-[#e7a7f4]/40',
+                { hidden: i >= limit },
+              ]}
             >
               <button
                 type="button"
@@ -121,6 +131,20 @@ const galleryId = folder ? `galerie-${folder}` : 'galerie';
             </figure>
           ))}
         </div>
+
+        {hiddenCount > 0 && (
+          <div class="mt-10 flex justify-center" data-gallery-more-wrap>
+            <button
+              type="button"
+              data-gallery-more
+              class="inline-flex items-center gap-2 rounded-full bg-[#e7a7f4] px-6 py-3 font-display text-sm font-bold uppercase tracking-wide text-white shadow-lg shadow-[#e7a7f4]/40 transition hover:bg-[#d98fe0] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#b05ec0]"
+              aria-label={`Afficher ${hiddenCount} photo(s) supplémentaire(s)`}
+            >
+              <span class="text-xl leading-none">+</span>
+              Voir plus ({hiddenCount})
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Lightbox */}
@@ -204,6 +228,18 @@ const galleryId = folder ? `galerie-${folder}` : 'galerie';
               { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
             );
             revealables.forEach((el) => observer.observe(el));
+          }
+
+          // --- Bouton « Voir plus » ---
+          const moreBtn = section.querySelector<HTMLButtonElement>('[data-gallery-more]');
+          if (moreBtn) {
+            moreBtn.addEventListener('click', () => {
+              section.querySelectorAll<HTMLElement>('[data-extra]').forEach((el) => {
+                el.classList.remove('hidden');
+                el.classList.add('is-visible');
+              });
+              section.querySelector('[data-gallery-more-wrap]')?.remove();
+            });
           }
 
           // --- Lightbox ---
