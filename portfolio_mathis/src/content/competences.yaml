@@ -1,0 +1,172 @@
+# ════════════════════════════════════════════════════════════════
+#  COMPÉTENCES  —  page « Compétences »
+#  Ce fichier pilote toute la page. Il est découpé en 4 sections :
+#    hard-skills  : les « hard skills » (cartes roses)
+#    soft-skills  : les « soft skills » (cartes marron)
+#    outils       : les logiciels & outils (par catégorie)
+#    details      : les blocs de compétences détaillés (avec notes)
+#  ⚠️ Ne change PAS les noms de section (hard-skills, soft-skills,
+#     outils, details) ni l'indentation (les espaces en début de ligne).
+# ════════════════════════════════════════════════════════════════
+
+
+# ─── HARD SKILLS ────────────────────────────────────────────────
+# Cartes : un titre, un niveau, une icône et une liste de points.
+# niveau accepté : Débutant | Intermédiaire | Avancé | Expert
+# icône acceptée : projet | logistique | marketing
+hard-skills:
+  titre: Hard skills
+  skills:
+    - titre: Gestion de projet
+      icon: projet            # icône affichée sur la carte
+      niveau: Avancé
+      items:                  # liste à puces (un tiret par ligne)
+        - Outils de gestion de projet
+        - Maîtrise de la conception d'un événement
+        - Planification
+        - Gestion budgétaire
+    - titre: Logistique & technique
+      icon: logistique
+      niveau: Expert
+      items:
+        - Gestion des prestataires
+        - Régie technique
+        - Gestion de la chaîne logistique
+    - titre: Marketing
+      icon: marketing
+      niveau: Avancé
+      items:
+        - Outils de création graphique
+        - Marketing digital
+        - Outils de billetterie & CRM
+
+
+# ─── SOFT SKILLS ────────────────────────────────────────────────
+# Même fonctionnement que les hard skills.
+# icône acceptée : flexibilite | equipe | apprentissage
+soft-skills:
+  titre: Soft skills
+  skills:
+    - titre: Flexibilité
+      icon: flexibilite
+      niveau: Expert
+      items:
+        - Habitude du changement
+        - Différentes entreprises
+        - Plusieurs missions différentes
+    - titre: Travail en équipe
+      icon: equipe
+      niveau: Avancé
+      items:
+        - Travail en équipe avec répartition des tâches
+    - titre: Apprentissage
+      icon: apprentissage
+      niveau: Expert
+      items:
+        - Apprentissage en formations
+        - Apprentissage des méthodes de travail
+
+
+# ─── LOGICIELS & OUTILS ─────────────────────────────────────────
+# Une carte par catégorie, avec sa liste d'outils.
+outils:
+  titre: Logiciels & outils
+  groupes:
+    - categorie: Création & contenu
+      items:
+        - Canva
+        - CapCut
+        - Suite Adobe
+    - categorie: Billetterie & CRM
+      items:
+        - Shotgun
+        - Weezevent
+        - HelloAsso
+    - categorie: Gestion & bureautique
+      items:
+        - Notion
+        - Trello
+        - Microsoft Office
+        - Google Workspace
+    - categorie: Réseaux sociaux
+      items:
+        - Instagram
+        - Meta Business Suite
+        - TikTok
+
+
+# ─── BLOCS DE COMPÉTENCES DÉTAILLÉS ─────────────────────────────
+# Chaque bloc a un titre, un sous-titre, une moyenne (sur 5) et une
+# liste de compétences notées.
+#   niveau  : note de 1 à 5 (les demi-points sont permis, ex. 4.5)
+#   score   : Supervisé | Autonome | Maîtrise | Expert
+#   exemple : phrase qui illustre la compétence
+details:
+  titre: Blocs de compétences
+  blocs:
+    - titre: Conception & gestion de projet
+      sousTitre: Conception & gestion de projet événementiel
+      moyenne: "3,8"          # note moyenne du bloc, affichée dans la jauge
+      competences:
+        - nom: Définition du cahier des charges
+          niveau: 4
+          score: Maîtrise
+          exemple: Préparation de différents salons et de clients aux demandes variées.
+        - nom: Planification & rétroplanning
+          niveau: 4
+          score: Maîtrise
+          exemple: Gestion de planning pour l'organisation d'événements et concerts (fiches de route).
+        - nom: Gestion budgétaire
+          niveau: 4
+          score: Maîtrise
+          exemple: Gestion des budgets lors de l'organisation d'événements avec Molo Molo Records.
+        - nom: Coordination des prestataires
+          niveau: 4
+          score: Maîtrise
+          exemple: Accueil de différents prestataires (traiteur, technique, matériel) sur des salons.
+        - nom: Gestion des risques & imprévus
+          niveau: 3
+          score: Autonome
+          exemple: Retard d'un fournisseur réglé en trouvant une solution avec un traiteur.
+
+    - titre: Communication & promotion
+      sousTitre: Communication & promotion de l'événement
+      moyenne: "3,8"
+      competences:
+        - nom: Création de supports de communication
+          niveau: 4
+          score: Maîtrise
+          exemple: Création de supports professionnels (catalogue d'activités) et de visuels pour des concerts.
+        - nom: Stratégie digitale & réseaux sociaux
+          niveau: 4
+          score: Maîtrise
+          exemple: "Gestion des réseaux de Molo Molo Records : publications, reels, stories, publicité."
+        - nom: Relations presse & partenariats
+          niveau: 2
+          score: Supervisé
+          exemple: Démarchage sponsors et premières actions de relations presse.
+        - nom: Rédaction professionnelle
+          niveau: 5
+          score: Expert
+          exemple: Rédaction des statuts de l'association Molo Molo Records et des documents administratifs.
+
+    - titre: Coordination logistique & relation client
+      sousTitre: Coordination logistique & relation client
+      moyenne: "4,4"
+      competences:
+        - nom: Négociation commerciale
+          niveau: 4
+          score: Maîtrise
+          exemple: Négociation avec les prestataires sur les prix des contrats et du matériel.
+        - nom: Gestion d'équipe & coordination jour J
+          niveau: 5
+          score: Expert
+          exemple: "Régisseur général : gestion des équipes techniques, accueil et sécurité."
+        - nom: Relation client & satisfaction
+          niveau: 4.5
+          score: Expert
+          exemple: Suivi client post-événement pour relever les points positifs et les axes d'amélioration.
+        - nom: Adaptabilité & résolution de problèmes
+          niveau: 4
+          score: Maîtrise
+          exemple: Recherche de solutions rapides et efficaces face aux imprévus.

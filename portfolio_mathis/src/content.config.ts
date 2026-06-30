@@ -28,4 +28,59 @@ const evenements = defineCollection({
   schema: ficheSchema,
 });
 
-export const collections = { projets, evenements };
+// ── Compétences ──────────────────────────────────────────────────
+// Un seul fichier YAML, découpé en 4 sections (hard-skills, soft-skills,
+// outils, details). Le loader `file` crée une entrée par section ;
+// le schéma ci-dessous tolère les 4 formes (chaque champ est optionnel
+// selon la section) tout en validant la structure interne de chacune.
+const competencesSchema = z.object({
+  titre: z.string().optional().default(""),
+  // hard-skills / soft-skills
+  skills: z
+    .array(
+      z.object({
+        titre: z.string(),
+        icon: z.string().optional().default(""),
+        niveau: z.string(),
+        items: z.array(z.string()).optional().default([]),
+      })
+    )
+    .optional(),
+  // outils
+  groupes: z
+    .array(
+      z.object({
+        categorie: z.string(),
+        items: z.array(z.string()).optional().default([]),
+      })
+    )
+    .optional(),
+  // details (blocs notés)
+  blocs: z
+    .array(
+      z.object({
+        titre: z.string(),
+        sousTitre: z.string().optional().default(""),
+        moyenne: z.string().optional().default(""),
+        competences: z
+          .array(
+            z.object({
+              nom: z.string(),
+              niveau: z.number(),
+              score: z.string(),
+              exemple: z.string().optional().default(""),
+            })
+          )
+          .optional()
+          .default([]),
+      })
+    )
+    .optional(),
+});
+
+const competences = defineCollection({
+  loader: file("src/content/competences.yaml"),
+  schema: competencesSchema,
+});
+
+export const collections = { projets, evenements, competences };

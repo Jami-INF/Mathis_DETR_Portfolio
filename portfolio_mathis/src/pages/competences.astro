@@ -2,67 +2,31 @@
 // src/pages/competences.astro
 import "../styles/global.css";
 import Layout from '../layouts/Layout.astro';
+import { getEntry } from 'astro:content';
 
 import CompetenceSection from "../components/section/competence/CompetenceSection.astro";
 import SkillsSection from "../components/section/competence/skills/SkillsSection.astro";
 import ToolsSection from "../components/section/competence/ToolsSection.astro";
 
-const blocs = [
-  {
-    title: "Conception & gestion de projet",
-    sousTitre: "Conception & gestion de projet événementiel",
-    moyenne: "3,8",
-    competences: [
-      { nom: "Définition du cahier des charges", niveau: 4, score: "Maîtrise", exemple: "Préparation de différents salons et de clients aux demandes variées." },
-      { nom: "Planification & rétroplanning", niveau: 4, score: "Maîtrise", exemple: "Gestion de planning pour l'organisation d'événements et concerts (fiches de route)." },
-      { nom: "Gestion budgétaire", niveau: 4, score: "Maîtrise", exemple: "Gestion des budgets lors de l'organisation d'événements avec Molo Molo Records." },
-      { nom: "Coordination des prestataires", niveau: 4, score: "Maîtrise", exemple: "Accueil de différents prestataires (traiteur, technique, matériel) sur des salons." },
-      { nom: "Gestion des risques & imprévus", niveau: 3, score: "Autonome", exemple: "Retard d'un fournisseur réglé en trouvant une solution avec un traiteur." },
-    ],
-  },
-  {
-    title: "Communication & promotion",
-    sousTitre: "Communication & promotion de l'événement",
-    moyenne: "3,8",
-    competences: [
-      { nom: "Création de supports de communication", niveau: 4, score: "Maîtrise", exemple: "Création de supports professionnels (catalogue d'activités) et de visuels pour des concerts." },
-      { nom: "Stratégie digitale & réseaux sociaux", niveau: 4, score: "Maîtrise", exemple: "Gestion des réseaux de Molo Molo Records : publications, reels, stories, publicité." },
-      { nom: "Relations presse & partenariats", niveau: 2, score: "Supervisé", exemple: "Démarchage sponsors et premières actions de relations presse." },
-      { nom: "Rédaction professionnelle", niveau: 5, score: "Expert", exemple: "Rédaction des statuts de l'association Molo Molo Records et des documents administratifs." },
-    ],
-  },
-  {
-    title: "Coordination logistique & relation client",
-    sousTitre: "Coordination logistique & relation client",
-    moyenne: "4,4",
-    competences: [
-      { nom: "Négociation commerciale", niveau: 4, score: "Maîtrise", exemple: "Négociation avec les prestataires sur les prix des contrats et du matériel." },
-      { nom: "Gestion d'équipe & coordination jour J", niveau: 5, score: "Expert", exemple: "Régisseur général : gestion des équipes techniques, accueil et sécurité." },
-      { nom: "Relation client & satisfaction", niveau: 4.5, score: "Expert", exemple: "Suivi client post-événement pour relever les points positifs et les axes d'amélioration." },
-      { nom: "Adaptabilité & résolution de problèmes", niveau: 4, score: "Maîtrise", exemple: "Recherche de solutions rapides et efficaces face aux imprévus." },
-    ],
-  },
-];
-// niveau : "Débutant" | "Intermédiaire" | "Avancé" | "Expert"
-const hardSkills = [
-  { title: "Gestion de projet", icon: "projet", niveau: "Avancé", items: ["Outils de gestion de projet", "Maîtrise de la conception d'un événement", "Planification", "Gestion budgétaire"] },
-  { title: "Logistique & technique", icon: "logistique", niveau: "Expert", items: ["Gestion des prestataires", "Régie technique", "Gestion de la chaîne logistique"] },
-  { title: "Marketing", icon: "marketing", niveau: "Avancé", items: ["Outils de création graphique", "Marketing digital", "Outils de billetterie & CRM"] },
-];
+// Contenu éditable : src/content/competences.yaml (4 sections).
+const hardData = (await getEntry('competences', 'hard-skills'))?.data;
+const softData = (await getEntry('competences', 'soft-skills'))?.data;
+const outilsData = (await getEntry('competences', 'outils'))?.data;
+const detailsData = (await getEntry('competences', 'details'))?.data;
 
-const softSkills = [
-  { title: "Flexibilité", icon: "flexibilite", niveau: "Expert", items: ["Habitude du changement", "Différentes entreprises", "Plusieurs missions différentes"] },
-  { title: "Travail en équipe", icon: "equipe", niveau: "Avancé", items: ["Travail en équipe avec répartition des tâches"] },
-  { title: "Apprentissage", icon: "apprentissage", niveau: "Expert", items: ["Apprentissage en formations", "Apprentissage des méthodes de travail"] },
-];
+// Les composants attendent `title` ; le YAML utilise `titre` (français) → on mappe.
+const mapSkills = (skills = []) =>
+  skills.map((s) => ({ title: s.titre, icon: s.icon, niveau: s.niveau, items: s.items }));
 
-// À VALIDER / AJUSTER : outils réellement utilisés par Mathis.
-const outils = [
-  { categorie: "Création & contenu", items: ["Canva", "CapCut", "Suite Adobe"] },
-  { categorie: "Billetterie & CRM", items: ["Shotgun", "Weezevent", "HelloAsso"] },
-  { categorie: "Gestion & bureautique", items: ["Notion", "Trello", "Microsoft Office", "Google Workspace"] },
-  { categorie: "Réseaux sociaux", items: ["Instagram", "Meta Business Suite", "TikTok"] },
-];
+const hardSkills = mapSkills(hardData?.skills);
+const softSkills = mapSkills(softData?.skills);
+const outils = outilsData?.groupes ?? [];
+const blocs = (detailsData?.blocs ?? []).map((b) => ({
+  title: b.titre,
+  sousTitre: b.sousTitre,
+  moyenne: b.moyenne,
+  competences: b.competences,
+}));
 ---
 
 <Layout
