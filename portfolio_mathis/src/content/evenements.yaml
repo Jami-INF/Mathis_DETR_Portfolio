@@ -1,0 +1,76 @@
+# ════════════════════════════════════════════════════════════════
+#  ÉVÉNEMENTS  —  page « Mes événements »
+#  Chaque événement commence par un tiret « - ». Pour en ajouter un,
+#  recopie un bloc existant et change les valeurs.
+#  ⚠️ Garde l'indentation (les espaces en début de ligne) identique.
+# ════════════════════════════════════════════════════════════════
+
+- id: interludes-du-court     # identifiant technique — ne pas modifier
+  ordre: 1                    # ordre d'affichage (1 = en premier)
+  titre: Les Interludes       # titre affiché (1re ligne, en gros)
+  titre2: du Court            # 2e ligne du titre (laisser "" si aucune)
+  role: Organisation & régie — Molo Molo Records
+  # Texte de présentation de l'événement :
+  description: >
+    Les Interludes du Court : un rendez-vous porté par Molo Molo Records,
+    mêlant projections et performances live. De l'organisation à la régie
+    le jour J, un événement pensé pour mettre en valeur les artistes et le
+    public local.
+  missions:                   # liste à puces (un tiret par ligne)
+    - Organisation et logistique de l'événement
+    - Régie et accueil des artistes
+    - Communication autour de la soirée
+  image: galerie/Molo Molo Interludes/Les interludes du court.jpeg
+  alt: Les Interludes du Court
+  galerie: Molo Molo Interludes   # nom du dossier photos, ou "" si aucun
+
+- id: sans-facon-1
+  ordre: 2
+  titre: Sans Façon
+  titre2: "#1"
+  role: Organisation & régie — Molo Molo Records
+  description: >
+    La première édition des soirées « Sans Façon » de Molo Molo Records :
+    une soirée concert pensée pour faire découvrir nos artistes dans une
+    ambiance conviviale et sans chichis.
+  missions:
+    - Programmation et organisation
+    - Régie son & lumières
+    - Accompagnement des artistes
+  image: galerie/Molo Molo Sans Facon 1/Sans Façon 1.jpeg
+  alt: Soirée Sans Façon #1
+  galerie: Molo Molo Sans Facon 1
+
+- id: volcamp-salons-hall32
+  ordre: 3
+  titre: Volcamp
+  titre2: "& salons au Hall 32"
+  role: Suivi & régie — Hall 32
+  description: >
+    Salons et séminaires accueillis au Hall 32 (dont Volcamp et Altern'Up) :
+    de la demande de devis au suivi des prestataires, jusqu'à la régie le
+    jour de l'événement.
+  missions:
+    - Devis et sélection des prestataires
+    - Suivi de l'organisation
+    - Régie le jour de l'événement
+  image: galerie/Hall 32/Salon Volcamp.jpeg
+  alt: Salon Volcamp au Hall 32
+  galerie: Hall 32
+
+- id: festivals-master-juice
+  ordre: 4
+  titre: Festivals
+  titre2: Master Juice
+  role: Régie son & lumières — Master Juice Production
+  description: >
+    Les festivals et scènes sur lesquels Master Juice Production est
+    intervenue, du Off du Hellfest aux scènes locales. Régie technique,
+    montage de scène et accompagnement des artistes en conditions live.
+  missions:
+    - Régie son & lumières
+    - Montage et exploitation de scène
+    - Accompagnement artistique sur le terrain
+  image: galerie/MJ Prod/Off du Hellfest.jpeg
+  alt: Off du Hellfest — Master Juice Production
+  galerie: MJ Prod

@@ -1,6 +1,6 @@
 # Portfolio — Mathis Detroussat
 
-Site portfolio one-page + sections dédiées, conçu et développé pour **Mathis Detroussat**, chargé de projet événementiel, afin de présenter son parcours, ses projets, ses événements et ses compétences.
+Site portfolio conçu et développé pour **Mathis Detroussat**, chargé de projet événementiel, afin de présenter son parcours, ses projets, ses événements et ses compétences.
 
 🔗 **En ligne : [mathis-detroussat.fr](https://mathis-detroussat.fr)**
 
@@ -15,7 +15,7 @@ Site portfolio one-page + sections dédiées, conçu et développé pour **Mathi
 
 Mathis avait besoin d'un site vitrine **professionnel, rapide et personnel** pour valoriser son profil auprès d'écoles et de recruteurs dans l'événementiel. L'objectif : un site **statique** (donc ultra-rapide et sans coût de serveur), avec une **direction artistique forte** (style « sticker » rose/crème, titres détourés, éléments décoratifs) et un **vrai soin sur la performance, l'accessibilité et le référencement**.
 
-Le contenu (parcours, projets, photos) est celui de Mathis ; le design, l'intégration, l'outillage et la mise en production ont été réalisés par mes soins.
+Le contenu le design (parcours, projets, photos, style) est celui de Mathis ; la conception web, le design, l'intégration, l'outillage et la mise en production ont été réalisés par mes soins.
 
 ---
 

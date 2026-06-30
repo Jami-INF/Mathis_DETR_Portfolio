@@ -1,84 +1,31 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProjetsSection from '../components/section/projet/ProjetsSection.astro';
+import { getCollection } from 'astro:content';
+import type { ImageMetadata } from 'astro';
 
-// Couvertures de projets
-import hall32 from '../assets/projets/hall32.jpg';
-import molomolo from '../assets/projets/molomolo.jpg';
-import masterJuice from '../assets/galerie/MJ Prod/Le lieu dit.jpeg';
+// Toutes les images optimisables du projet, résolues par leur chemin
+// (ex: "projets/hall32.jpg" -> /src/assets/projets/hall32.jpg).
+// Mathis n'écrit qu'un nom de fichier dans le YAML, le code fait le lien.
+const images = import.meta.glob<ImageMetadata>(
+  '/src/assets/**/*.{jpg,jpeg,png,webp,JPG,JPEG,PNG,WEBP}',
+  { eager: true, import: 'default' }
+);
 
-// Couvertures d'événements
-import coverInterludes from '../assets/galerie/Molo Molo Interludes/Les interludes du court.jpeg';
-import coverSansFacon from '../assets/galerie/Molo Molo Sans Facon 1/Sans Façon 1.jpeg';
-import coverVolcamp from '../assets/galerie/Hall 32/Salon Volcamp.jpeg';
-import coverFestivals from '../assets/galerie/MJ Prod/Off du Hellfest.jpeg';
-
-// ─────────────────────────────────────────────────────────────
-// PROJETS — structures fondées / dans lesquelles j'ai travaillé
-// Chaque projet : visuel + rôle + missions + résultats
-// ─────────────────────────────────────────────────────────────
-const projets = [
-  {
-    title: 'Hall 32',
-    title2: '',
-    role: "Chargé d'événementiel",
-    description:
-      "Au Hall 32 nous accueillons divers événements tel que des salons et séminaires, je suis en charge de différents dossiers, allant de la demande de devis, la recherche de prestataires, ainsi que l'organisation et le suivi des événements.",
-    missions: [
-      'Devis & commande',
-      'Recherche de prestataires',
-      "Suivi d'événement",
-      'Régie et accompagnement',
-    ],
-    image: hall32,
-    imageAlt: 'Auditorium du Hall 32',
-  },
-  {
-    title: 'Molo Molo',
-    title2: 'Records',
-    role: 'Co-fondateur',
-    description:
-      "En septembre 2025 nous avons créé le label Molo Molo Records, avec l'objectif d'accompagner les artistes locaux dans leurs développement. Nous organisons également plusieurs événements au cours de l'année pour promouvoir le label et nos artistes, en collaborant également avec différentes associations locale.",
-    missions: [
-      'Communication sur les réseaux',
-      'Accompagnement artistique',
-      'Démarches administratives',
-      "Organisation d'événements / concerts",
-    ],
-    image: molomolo,
-    imageAlt: 'Événement organisé par Molo Molo Records',
-    galerie: 'Molo Molo Sans Facon 2',
-  },
-  {
-    title: 'Master Juice',
-    title2: 'Production',
-    role: 'Co-fondateur',
-    description:
-      "Au cours de nos études, avec un ami nous avons eu l'occasion de nous lancer dans la création d'une entreprise. Avec Master Juice Production nous accompagnons différents groupes et assurons la régie son et lumières lors de concerts.",
-    missions: [
-      'Régisseur lumières',
-      'Organisation de scènes pour les événements concert ou festival',
-      'Accompagnement artistique',
-    ],
-    image: masterJuice,
-    imageAlt: 'Scène montée par Master Juice Production',
-    galerie: 'MJ Prod',
-  },
-  {
-    title: 'Kick7Shit',
-    title2: '',
-    role: 'Secrétaire',
-    description:
-      "Kick7Shit c’est créé il y a maintenant 2 ans, dans le but de regrouper différents rappeurs et beatmakers afin de mettre en place différents évéments pour montrer la culture du rap et permettre à tous de jouer lors d’open mic durant les concerts.",
-    missions: [
-      'Conseil d’administration',
-      'Secrétaire de Kick7Shit',
-      'Accompagnement administratif et projet',
-    ],
-    // Pas d'image fournie : un placeholder stylisé est affiché.
-  },
-];
-
+// Contenu éditable : src/content/projets.yaml
+const entries = await getCollection('projets');
+entries.sort((a, b) => a.data.ordre - b.data.ordre);
+const projets = entries.map(({ data }) => ({
+  title: data.titre,
+  title2: data.titre2,
+  role: data.role,
+  description: data.description,
+  missions: data.missions,
+  results: data.resultats,
+  image: data.image ? images[`/src/assets/${data.image}`] : undefined,
+  imageAlt: data.alt,
+  galerie: data.galerie || undefined,
+}));
 ---
 
 <Layout

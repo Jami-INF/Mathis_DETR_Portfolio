@@ -1,0 +1,82 @@
+# ════════════════════════════════════════════════════════════════
+#  PROJETS  —  page « Mes projets »
+#  Chaque projet commence par un tiret « - ». Pour en ajouter un,
+#  recopie un bloc existant et change les valeurs.
+#  ⚠️ Garde l'indentation (les espaces en début de ligne) identique.
+# ════════════════════════════════════════════════════════════════
+
+- id: hall-32                 # identifiant technique — ne pas modifier
+  ordre: 1                    # ordre d'affichage (1 = en premier)
+  titre: Hall 32              # titre affiché (1re ligne, en gros)
+  titre2: ""                  # 2e ligne du titre (laisser "" si aucune)
+  role: Chargé d'événementiel
+  # Texte de présentation du projet :
+  description: >
+    Au Hall 32 nous accueillons divers événements tel que des salons et
+    séminaires, je suis en charge de différents dossiers, allant de la
+    demande de devis, la recherche de prestataires, ainsi que
+    l'organisation et le suivi des événements.
+  missions:                   # liste à puces (un tiret par mission)
+    - Devis & commande
+    - Recherche de prestataires
+    - Suivi d'événement
+    - Régie et accompagnement
+  image: projets/hall32.jpg   # fichier image dans src/assets/ (ou vide)
+  alt: Auditorium du Hall 32  # description de l'image (accessibilité)
+  galerie: ""                 # nom du dossier photos, ou "" si aucun
+
+- id: molo-molo
+  ordre: 2
+  titre: Molo Molo
+  titre2: Records
+  role: Co-fondateur
+  description: >
+    En septembre 2025 nous avons créé le label Molo Molo Records, avec
+    l'objectif d'accompagner les artistes locaux dans leur développement.
+    Nous organisons également plusieurs événements au cours de l'année
+    pour promouvoir le label et nos artistes, en collaborant avec
+    différentes associations locales.
+  missions:
+    - Communication sur les réseaux
+    - Accompagnement artistique
+    - Démarches administratives
+    - Organisation d'événements / concerts
+  image: projets/molomolo.jpg
+  alt: Événement organisé par Molo Molo Records
+  galerie: Molo Molo Sans Facon 2
+
+- id: master-juice
+  ordre: 3
+  titre: Master Juice
+  titre2: Production
+  role: Co-fondateur
+  description: >
+    Au cours de nos études, avec un ami nous avons eu l'occasion de nous
+    lancer dans la création d'une entreprise. Avec Master Juice Production
+    nous accompagnons différents groupes et assurons la régie son et
+    lumières lors de concerts.
+  missions:
+    - Régisseur lumières
+    - Organisation de scènes pour les événements concert ou festival
+    - Accompagnement artistique
+  image: galerie/MJ Prod/Le lieu dit.jpeg
+  alt: Scène montée par Master Juice Production
+  galerie: MJ Prod
+
+- id: kick7shit
+  ordre: 4
+  titre: Kick7Shit
+  titre2: ""
+  role: Secrétaire
+  description: >
+    Kick7Shit c'est créé il y a maintenant 2 ans, dans le but de regrouper
+    différents rappeurs et beatmakers afin de mettre en place différents
+    événements pour montrer la culture du rap et permettre à tous de jouer
+    lors d'open mic durant les concerts.
+  missions:
+    - Conseil d'administration
+    - Secrétaire de Kick7Shit
+    - Accompagnement administratif et projet
+  image: ""                   # pas d'image : un visuel par défaut s'affiche
+  alt: ""
+  galerie: ""
