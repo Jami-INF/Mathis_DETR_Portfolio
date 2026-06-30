@@ -1,0 +1,114 @@
+---
+// src/pages/mentions-legales.astro
+import "../styles/global.css";
+import Layout from "../layouts/Layout.astro";
+
+const maj = "Juin 2026";
+---
+
+<Layout title="Mentions légales | Mathis DETROUSSAT">
+  <main class="relative overflow-hidden pt-24 pb-24">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 opacity-[0.05]"
+      style="background-image:
+        linear-gradient(to right, rgba(65, 56, 48, 0.5) 2px, transparent 2px),
+        linear-gradient(to bottom, rgba(65, 56, 48, 0.5) 2px, transparent 2px);
+        background-size: 46px 46px;"
+    ></div>
+
+    <article class="relative z-10 mx-auto max-w-3xl px-6">
+      <h1 class="font-display text-4xl font-extrabold uppercase tracking-tight text-[#6f5647] sm:text-5xl">
+        Mentions légales
+      </h1>
+      <p class="mt-2 text-sm text-[#9b8794]">Dernière mise à jour : {maj}</p>
+
+      <div class="mt-10 space-y-10 text-[#4a3528] leading-relaxed">
+        <section>
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Éditeur du site</h2>
+          <p class="mt-3">
+            Le site <strong>mathis-detroussat.fr</strong> est édité à titre personnel et non
+            commercial par <strong>Mathis Detroussat</strong>, particulier (étudiant en événementiel).
+          </p>
+          <ul class="mt-3 space-y-1">
+            <li>Localisation : Clermont-Ferrand, France</li>
+            <li>
+              Contact :
+              <a href="mailto:detroussat.mathis@yahoo.com" class="font-semibold text-[#b05ec0] hover:underline">
+                detroussat.mathis@yahoo.com
+              </a>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Directeur de la publication</h2>
+          <p class="mt-3">Mathis Detroussat.</p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Hébergement</h2>
+          <p class="mt-3">
+            Le site est hébergé par <strong>GitHub, Inc.</strong> (GitHub Pages),<br />
+            88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis —
+            <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#b05ec0] hover:underline">github.com</a>.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Nom de domaine</h2>
+          <p class="mt-3">
+            Le nom de domaine <strong>mathis-detroussat.fr</strong> est enregistré auprès de
+            <strong>OVH SAS</strong>, 2 rue Kellermann, 59100 Roubaix, France.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Propriété intellectuelle</h2>
+          <p class="mt-3">
+            L'ensemble des contenus de ce site (textes, mise en page, éléments graphiques) est la
+            propriété de Mathis Detroussat, sauf mention contraire. Certaines photographies restent
+            la propriété de leurs auteurs respectifs et sont créditées le cas échéant (filigrane).
+            Toute reproduction ou réutilisation, totale ou partielle, sans autorisation préalable est
+            interdite.
+          </p>
+        </section>
+
+        <section>
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Conception</h2>
+          <p class="mt-3">
+            Conception et développement :
+            <a href="https://www.linkedin.com/in/jami-infante/" target="_blank" rel="noopener noreferrer" class="font-semibold text-[#b05ec0] hover:underline">
+              Jami Infante
+            </a>.
+          </p>
+        </section>
+
+        <section id="confidentialite" class="scroll-mt-28 rounded-3xl bg-white/70 p-6 ring-1 ring-[#f1ddef]">
+          <h2 class="font-display text-xl font-bold uppercase tracking-wide text-[#b05ec0]">Données personnelles & confidentialité</h2>
+          <p class="mt-3">
+            Ce site est purement informatif. Il <strong>ne collecte aucune donnée personnelle</strong>,
+            n'utilise <strong>aucun cookie ni traceur</strong> et n'intègre aucun outil de mesure
+            d'audience.
+          </p>
+          <p class="mt-3">
+            Le seul moyen de contact est un lien e-mail (<code>mailto:</code>) : si vous m'écrivez,
+            votre adresse e-mail et le contenu de votre message sont utilisés uniquement pour vous
+            répondre, et ne sont ni conservés à d'autres fins ni transmis à des tiers.
+          </p>
+          <p class="mt-3">
+            L'hébergeur (GitHub Pages) est susceptible de conserver des journaux techniques de
+            connexion, dont l'adresse IP, à des fins de sécurité et de bon fonctionnement du service.
+          </p>
+          <p class="mt-3">
+            Conformément au RGPD, vous disposez d'un droit d'accès, de rectification et de suppression
+            de vos données. Pour toute demande, écrivez à
+            <a href="mailto:detroussat.mathis@yahoo.com" class="font-semibold text-[#b05ec0] hover:underline">
+              detroussat.mathis@yahoo.com
+            </a>.
+          </p>
+        </section>
+      </div>
+    </article>
+  </main>
+</Layout>
