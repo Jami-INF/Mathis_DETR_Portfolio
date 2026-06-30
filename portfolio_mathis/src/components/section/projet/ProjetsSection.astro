@@ -51,7 +51,7 @@ const slugify = (value: string) =>
 
 <section id={sectionId} class="bg-[#f8f6f2]">
 
-  <div class="max-w-7xl mx-auto px-6 pt-16">
+  <div class="max-w-7xl mx-auto px-6 pt-10 lg:pt-16">
     <BigTitle
       line1={title}
       line2=""
@@ -63,7 +63,7 @@ const slugify = (value: string) =>
       const folder = projet.galerie ?? slugify(projet.title);
       return (
         <Fragment>
-          <div class="max-w-7xl mx-auto px-6 py-14">
+          <div class="max-w-7xl mx-auto px-6 py-8 lg:py-14">
             <ProjetCard
               title={projet.title}
               title2={projet.title2}
