@@ -1,0 +1,52 @@
+---
+import Layout from '../layouts/Layout.astro';
+import StudioSequencer from '../components/game/sequencer/StudioSequencer.tsx';
+import BigTitle from '../components/text/BigTitle.astro';
+---
+
+<Layout
+  title="Studio"
+  description="Le studio de Mathis Detroussat : un mini launchpad pour jouer quelques sons directement dans le navigateur. Clique sur les pads ou utilise ton clavier."
+>
+  <main class="relative overflow-hidden pt-24 pb-24">
+    <h1 class="sr-only">Studio — le launchpad de Mathis Detroussat</h1>
+
+    <!-- Grille de fond, cohérente avec les autres pages -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 opacity-[0.06]"
+      style="background-image:
+        linear-gradient(to right, rgba(65, 56, 48, 0.5) 2px, transparent 2px),
+        linear-gradient(to bottom, rgba(65, 56, 48, 0.5) 2px, transparent 2px);
+        background-size: 46px 46px;"
+    >
+    </div>
+
+    <div class="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div class="mb-10 text-center">
+        <p class="mb-4 text-sm font-bold uppercase tracking-[0.2em] text-[#e7a7f4]">
+          Bonus
+        </p>
+        <div class="flex justify-center">
+          <BigTitle
+            line1="Studio"
+            line2=""
+            sizeClass="text-[3rem] sm:text-[4.5rem] lg:text-[5.5rem]"
+          />
+        </div>
+        <p class="mx-auto max-w-2xl text-base leading-relaxed text-[#6f5647]/80 sm:text-lg">
+          Un petit clin d'œil à mon univers musical : construis ta propre
+          boucle en allumant des cases, ajuste le tempo et écoute ton beat
+          tourner. Tout est généré en direct par ton navigateur.
+        </p>
+      </div>
+
+      <StudioSequencer client:visible />
+
+      <p class="mx-auto mt-8 max-w-md text-center text-sm text-[#6f5647]/60">
+        Construis ta boucle : chaque colonne est une subdivision du temps,
+        les colonnes marquées sont les temps forts.
+      </p>
+    </div>
+  </main>
+</Layout>
