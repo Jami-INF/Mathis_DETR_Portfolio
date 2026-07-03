@@ -8,7 +8,6 @@ const links = [
   { name: "Projets", url: `${basePath}projets/` },
   { name: "Evenements", url: `${basePath}evenements/` },
   { name: "Compétences", url: `${basePath}competences/` },
-  { name: "Studio", url: `${basePath}studio/` },
   { name: "Me contacter", url: `${basePath}#contact` },
 ];
 // Chemin de la page actuellement affichée, sans "/" final
@@ -31,7 +30,7 @@ const isActive = (url: string) => {
       Mathis DETROUSSAT
     </a>
 
-    <nav class="hidden md:flex gap-8">
+    <nav class="hidden md:flex items-center gap-8">
       {links.map((link) => (
         <a
           href={link.url}
@@ -45,6 +44,23 @@ const isActive = (url: string) => {
           {link.name}
         </a>
       ))}
+      {/* Accès discret au Studio : la petite fleur du favicon */}
+      <a
+        href={`${basePath}studio/`}
+        aria-label="Studio — le loop builder"
+        title="Studio"
+        class="group -ml-2"
+      >
+        <svg viewBox="0 0 64 64" class="h-6 w-6 transition-transform duration-300 group-hover:-rotate-12" aria-hidden="true">
+          <g transform="rotate(8 32 32)" fill="#edd1f1" stroke="#201920" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M24 8 L54 2 L54 11 L24 17 Z"></path>
+            <path d="M27 49 V12" fill="none"></path>
+            <path d="M51 43 V6" fill="none"></path>
+            <ellipse cx="20" cy="50" rx="8" ry="6"></ellipse>
+            <ellipse cx="44" cy="44" rx="8" ry="6"></ellipse>
+          </g>
+        </svg>
+      </a>
     </nav>
 
     <button
@@ -82,6 +98,21 @@ const isActive = (url: string) => {
           {link.name}
         </a>
       ))}
+      <a
+        href={`${basePath}studio/`}
+        aria-label="Studio — le loop builder"
+        class="mobile-link mx-auto mt-2"
+      >
+        <svg viewBox="0 0 64 64" class="h-10 w-10" aria-hidden="true">
+          <g transform="rotate(8 32 32)" fill="#edd1f1" stroke="#201920" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+            <path d="M24 8 L54 2 L54 11 L24 17 Z"></path>
+            <path d="M27 49 V12" fill="none"></path>
+            <path d="M51 43 V6" fill="none"></path>
+            <ellipse cx="20" cy="50" rx="8" ry="6"></ellipse>
+            <ellipse cx="44" cy="44" rx="8" ry="6"></ellipse>
+          </g>
+        </svg>
+      </a>
     </nav>
   </div>
 </header>

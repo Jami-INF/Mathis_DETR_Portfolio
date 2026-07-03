@@ -7,6 +7,14 @@ import * as Tone from "tone";
 type Voice = (time: number) => void;
 let voices: Voice[] = [];
 let seq: Tone.Sequence<number> | null = null;
+let meter: Tone.Meter | null = null;
+
+// Niveau sonore global lissé (0..1) — lu par la visualisation en rAF.
+export function getLevel(): number {
+  if (!meter) return 0;
+  const v = meter.getValue();
+  return typeof v === "number" ? Math.max(0, Math.min(1, v * 2.2)) : 0;
+}
 
 export async function unlock() {
   await Tone.start();
@@ -32,20 +40,22 @@ function buildVoices(): Voice[] {
     envelope: { attack: 0.001, decay: 0.3, sustain: 0 },
   }).connect(hatFilter);
   ohat.volume.value = -14;
+  // Basse « sub » : sinus à l'octave grave + filtre très bas → beaucoup
+  // plus de basses fréquences qu'une dent de scie filtrée.
   const bass = new Tone.MonoSynth({
-    oscillator: { type: "sawtooth" },
-    filter: { type: "lowpass", Q: 2 },
-    envelope: { attack: 0.005, decay: 0.25, sustain: 0 },
-    filterEnvelope: { attack: 0.005, decay: 0.15, sustain: 0.2, baseFrequency: 120, octaves: 2.5 },
+    oscillator: { type: "sine" },
+    filter: { type: "lowpass", Q: 1 },
+    envelope: { attack: 0.005, decay: 0.4, sustain: 0.3, release: 0.1 },
+    filterEnvelope: { attack: 0.005, decay: 0.2, sustain: 0.4, baseFrequency: 55, octaves: 1.5 },
   }).toDestination();
-  bass.volume.value = -6;
+  bass.volume.value = 0;
 
   return [
     (t) => kick.triggerAttackRelease("C1", "8n", t),
     (t) => snare.triggerAttackRelease("16n", t),
     (t) => hat.triggerAttackRelease("32n", t),
     (t) => ohat.triggerAttackRelease("8n", t),
-    (t) => bass.triggerAttackRelease("C2", "16n", t),
+    (t) => bass.triggerAttackRelease("C1", "8n", t),
   ];
 }
 
@@ -55,6 +65,10 @@ export function init(
 ) {
   if (seq) return;
   voices = buildVoices();
+  // Enveloppe globale : un Meter branché sur la sortie mesure le volume
+  // instantané ; smoothing = décroissance douce entre deux frappes.
+  meter = new Tone.Meter({ smoothing: 0.85, normalRange: true });
+  Tone.getDestination().connect(meter);
   seq = new Tone.Sequence(
     (time, step) => {
       const p = getPattern();
