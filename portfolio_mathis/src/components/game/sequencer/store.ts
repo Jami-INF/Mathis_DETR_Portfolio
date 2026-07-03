@@ -11,9 +11,10 @@ export const STEPS = 16;
 
 // Presets : 1 chaîne de 16 caractères par piste ("x" = actif).
 const P = (s: string) => [...s].map((c) => c === "x");
-export const PRESETS: Record<string, { tip: string; rows: boolean[][] }> = {
+export const PRESETS: Record<string, { tip: string; bpm: number; rows: boolean[][] }> = {
   House: {
     tip: "Kick sur chaque temps, hat en contretemps.",
+    bpm: 124,
     rows: [
       P("x...x...x...x..."),
       P("....x.......x..."),
@@ -22,24 +23,26 @@ export const PRESETS: Record<string, { tip: string; rows: boolean[][] }> = {
       P("x.....x...x....."),
     ],
   },
-  "Boom bap": {
-    tip: "Kick syncopé, snare sur les temps 2 et 4.",
+  "UK Garage": {
+    tip: "2-step : kick syncopé, snare sur 2 et 4, hats qui sautillent.",
+    bpm: 132,
     rows: [
-      P("x..x......x.x..."),
+      P("x......x..x....."),
       P("....x.......x..."),
-      P("x.x.x.x.x.x.x.x."),
-      P("................"),
-      P("x.........x....."),
+      P("..x...x.x...x.x."),
+      P("......x.......x."),
+      P("x.....x...x..x.."),
     ],
   },
-  Techno: {
-    tip: "Quatre kicks au sol, tout le reste en tension.",
+  Jungle: {
+    tip: "Breakbeat rapide : la snare se balade, la basse tient le fond.",
+    bpm: 160,
     rows: [
-      P("x...x...x...x..."),
-      P("................"),
-      P("..x...x...x...x."),
-      P("......x.......x."),
-      P("x...x...x...x.x."),
+      P("x.x.......x....."),
+      P("....x..x....x..x"),
+      P("x.xx.x.xx.xx.x.x"),
+      P("..............x."),
+      P("x.......x......."),
     ],
   },
 };

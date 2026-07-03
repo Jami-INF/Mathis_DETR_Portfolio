@@ -7,12 +7,24 @@ import {
 } from "./store";
 
 let engine: typeof import("./engine") | null = null;
+let rafId = 0;
+
+// Alimente la variable CSS --beat (quadrillage réactif de la page).
+function vizLoop() {
+  document.documentElement.style.setProperty(
+    "--beat",
+    (engine && isPlaying.value ? engine.getLevel() : 0).toFixed(3)
+  );
+  rafId = requestAnimationFrame(vizLoop);
+}
 
 async function handlePlay() {
   if (!engine) {
     engine = await import("./engine");
     await engine.unlock();
     engine.init(() => pattern.value, (s) => (currentStep.value = s));
+    cancelAnimationFrame(rafId);
+    vizLoop();
   }
   if (isPlaying.value) {
     engine.pause();
@@ -93,7 +105,13 @@ export default function StudioSequencer() {
       <div class="mb-5 flex flex-wrap gap-2">
         {Object.keys(PRESETS).map((name) => (
           <button
-            type="button" onClick={() => loadPreset(name)} title={PRESETS[name].tip}
+            type="button"
+            onClick={() => {
+              loadPreset(name);
+              bpm.value = PRESETS[name].bpm;
+              engine?.setBpm(bpm.value);
+            }}
+            title={PRESETS[name].tip}
             class="rounded-full bg-[#e7a7f4]/15 px-3 py-1 text-xs font-bold uppercase tracking-wide text-[#e7a7f4] ring-1 ring-[#e7a7f4]/30 transition hover:bg-[#e7a7f4]/30"
           >
             {name}

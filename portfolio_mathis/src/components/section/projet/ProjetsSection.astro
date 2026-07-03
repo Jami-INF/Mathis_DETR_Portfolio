@@ -3,6 +3,8 @@ import ProjetCard from './../../item/ProjetCard.astro';
 import GalerieSection from './../GalerieSection.astro';
 import BigTitle from "./../../text/BigTitle.astro";
 import Title from "./../../text/Title.astro";
+import FloatingAsset from "./../../decor/DessinVolant.astro";
+import EtoileRose from "./../../../assets/element/etoileRose.png";
 import type { ImageMetadata } from 'astro';
 
 export interface Projet {
@@ -51,7 +53,13 @@ const slugify = (value: string) =>
 
 <section id={sectionId} class="bg-[#f8f6f2]">
 
-  <div class="max-w-7xl mx-auto px-6 pt-10 lg:pt-16">
+  <div class="relative max-w-7xl mx-auto px-6 pt-10 lg:pt-16">
+    <FloatingAsset
+      src={EtoileRose}
+      alt=""
+      class="right-2 top-6 z-0 w-[52px] rotate-[-12deg] opacity-80 sm:right-6 sm:w-[72px] lg:w-[88px]"
+      imgClass="h-auto w-full"
+    />
     <BigTitle
       line1={title}
       line2=""
