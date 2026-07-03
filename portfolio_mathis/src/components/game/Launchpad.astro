@@ -1,0 +1,381 @@
+---
+// src/components/game/Launchpad.astro
+// Mini launchpad — 16 pads, sons 100% synthétisés via l'API Web Audio.
+// Aucune dépendance, aucun fichier son : tout est généré par le navigateur.
+// Le <script> en bas est déjà du JS côté client (Astro le bundle tout seul,
+// comme GalerieSection). Pas besoin de directive client:* (réservée aux
+// composants de framework, qui casseraient le build sur un .astro).
+
+// Couleur (LED allumée) par rangée.
+const rows = [
+  { color: "#ff8ac4", glow: "255,138,196" }, // percussions
+  { color: "#c58bff", glow: "197,139,255" }, // charleys / cymbales
+  { color: "#ff9f6b", glow: "255,159,107" }, // toms / fx
+  { color: "#ffd166", glow: "255,209,102" }, // mélodique
+];
+
+// 4×4 pads. `key` = touche clavier (pensé AZERTY, cluster main gauche).
+const pads = [
+  { id: "kick",    name: "Kick",     key: "1" },
+  { id: "snare",   name: "Snare",    key: "2" },
+  { id: "clap",    name: "Clap",     key: "3" },
+  { id: "rim",     name: "Rim",      key: "4" },
+  { id: "hhc",     name: "Hat",      key: "a" },
+  { id: "hho",     name: "Open Hat", key: "z" },
+  { id: "crash",   name: "Crash",    key: "e" },
+  { id: "cowbell", name: "Cowbell",  key: "r" },
+  { id: "tomlo",   name: "Tom Low",  key: "q" },
+  { id: "tommid",  name: "Tom Mid",  key: "s" },
+  { id: "tomhi",   name: "Tom Hi",   key: "d" },
+  { id: "zap",     name: "Zap",      key: "f" },
+  { id: "bass",    name: "Bass",     key: "w" },
+  { id: "stab",    name: "Stab",     key: "x" },
+  { id: "chord",   name: "Chord",    key: "c" },
+  { id: "laser",   name: "Laser",    key: "v" },
+];
+---
+
+<div
+  class="launchpad relative mx-auto w-full max-w-xl rounded-[2rem] bg-[#201820] p-5 shadow-[10px_10px_0_#201820] ring-1 ring-black/40 sm:p-7"
+  data-launchpad
+>
+  <!-- Grille de fond, comme les autres sections -->
+  <div
+    aria-hidden="true"
+    class="pointer-events-none absolute inset-0 rounded-[2rem] opacity-[0.12]"
+    style="background-image:
+      linear-gradient(to right, rgba(255,255,255,0.4) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255,255,255,0.4) 1px, transparent 1px);
+      background-size: 30px 30px;"
+  >
+  </div>
+
+  <div class="relative z-10 grid grid-cols-4 gap-3 sm:gap-4">
+    {
+      pads.map((pad, i) => {
+        const r = rows[Math.floor(i / 4)];
+        return (
+          <button
+            type="button"
+            class="pad group relative flex aspect-square select-none flex-col items-start justify-between overflow-hidden rounded-2xl p-2.5 text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70 sm:p-3"
+            style={`--pad:${r.color};--glow:${r.glow}`}
+            data-sound={pad.id}
+            data-key={pad.key}
+            aria-label={`Jouer ${pad.name} (touche ${pad.key.toUpperCase()})`}
+          >
+            <span class="pad-key rounded-md px-1.5 py-0.5 font-display text-[0.65rem] font-bold uppercase leading-none tracking-wide">
+              {pad.key}
+            </span>
+            <span class="pad-name font-display text-[0.7rem] font-bold uppercase leading-tight tracking-wide sm:text-xs">
+              {pad.name}
+            </span>
+          </button>
+        );
+      })
+    }
+  </div>
+</div>
+
+<style>
+  .pad {
+    background: #2c2331;
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+    transition:
+      transform 0.12s ease,
+      background-color 0.12s ease,
+      box-shadow 0.12s ease;
+  }
+  .pad-key {
+    background: rgba(255, 255, 255, 0.08);
+    color: rgba(255, 255, 255, 0.5);
+  }
+  .pad-name {
+    color: rgba(255, 255, 255, 0.4);
+  }
+  /* Halo léger au survol pour indiquer que c'est cliquable */
+  .pad:hover {
+    background: #372b3d;
+  }
+  /* État « LED allumée » : ajouté par JS au déclenchement */
+  .pad.is-hit {
+    background: var(--pad);
+    transform: scale(0.94);
+    box-shadow:
+      0 0 24px rgba(var(--glow), 0.9),
+      0 0 6px rgba(var(--glow), 0.6),
+      inset 0 0 0 1px rgba(255, 255, 255, 0.35);
+  }
+  .pad.is-hit .pad-key {
+    background: rgba(0, 0, 0, 0.25);
+    color: rgba(0, 0, 0, 0.7);
+  }
+  .pad.is-hit .pad-name {
+    color: rgba(0, 0, 0, 0.72);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pad,
+    .pad.is-hit {
+      transition: background-color 0.12s ease, box-shadow 0.12s ease;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  type Ctx = AudioContext;
+  let ctx: Ctx | null = null;
+  let master: GainNode;
+  let noise: AudioBuffer;
+
+  // Crée (une fois) le contexte audio et le débloque au premier geste.
+  // iOS/Android n'autorisent l'audio qu'à l'intérieur d'une interaction.
+  function ensureAudio() {
+    if (ctx) {
+      if (ctx.state === "suspended") ctx.resume();
+      return;
+    }
+    const AC =
+      window.AudioContext || (window as any).webkitAudioContext;
+    ctx = new AC();
+    const comp = ctx.createDynamicsCompressor();
+    master = ctx.createGain();
+    master.gain.value = 0.85;
+    master.connect(comp);
+    comp.connect(ctx.destination);
+
+    // Buffer de bruit blanc réutilisé (percus, cymbales…).
+    const len = Math.floor(ctx.sampleRate * 1);
+    noise = ctx.createBuffer(1, len, ctx.sampleRate);
+    const data = noise.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = Math.random() * 2 - 1;
+  }
+
+  // ── Helpers ────────────────────────────────────────────────
+  function noiseSrc() {
+    const s = ctx!.createBufferSource();
+    s.buffer = noise;
+    return s;
+  }
+  // Enveloppe d'amplitude exponentielle (attaque courte → extinction).
+  function env(g: GainNode, t: number, peak: number, dur: number) {
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.exponentialRampToValueAtTime(peak, t + 0.004);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+  }
+  function osc(type: OscillatorType, freq: number) {
+    const o = ctx!.createOscillator();
+    o.type = type;
+    o.frequency.value = freq;
+    return o;
+  }
+
+  // ── Voix (chaque son est synthétisé à la volée) ────────────
+  const voices: Record<string, (t: number) => void> = {
+    kick(t) {
+      const o = osc("sine", 150);
+      o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+      const g = ctx!.createGain();
+      env(g, t, 1, 0.45);
+      o.connect(g).connect(master);
+      o.start(t);
+      o.stop(t + 0.45);
+    },
+    snare(t) {
+      const n = noiseSrc();
+      const hp = ctx!.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 1400;
+      const ng = ctx!.createGain();
+      env(ng, t, 0.7, 0.2);
+      n.connect(hp).connect(ng).connect(master);
+      n.start(t);
+      n.stop(t + 0.2);
+      const o = osc("triangle", 180);
+      const og = ctx!.createGain();
+      env(og, t, 0.4, 0.12);
+      o.connect(og).connect(master);
+      o.start(t);
+      o.stop(t + 0.12);
+    },
+    clap(t) {
+      [0, 0.012, 0.024, 0.04].forEach((d, i) => {
+        const n = noiseSrc();
+        const bp = ctx!.createBiquadFilter();
+        bp.type = "bandpass";
+        bp.frequency.value = 1200;
+        bp.Q.value = 1.2;
+        const g = ctx!.createGain();
+        env(g, t + d, i === 3 ? 0.6 : 0.35, 0.05);
+        n.connect(bp).connect(g).connect(master);
+        n.start(t + d);
+        n.stop(t + d + 0.06);
+      });
+    },
+    rim(t) {
+      const o = osc("triangle", 1700);
+      const g = ctx!.createGain();
+      env(g, t, 0.5, 0.04);
+      o.connect(g).connect(master);
+      o.start(t);
+      o.stop(t + 0.04);
+    },
+    hhc(t) {
+      const n = noiseSrc();
+      const hp = ctx!.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 8000;
+      const g = ctx!.createGain();
+      env(g, t, 0.35, 0.05);
+      n.connect(hp).connect(g).connect(master);
+      n.start(t);
+      n.stop(t + 0.05);
+    },
+    hho(t) {
+      const n = noiseSrc();
+      const hp = ctx!.createBiquadFilter();
+      hp.type = "highpass";
+      hp.frequency.value = 7000;
+      const g = ctx!.createGain();
+      env(g, t, 0.32, 0.35);
+      n.connect(hp).connect(g).connect(master);
+      n.start(t);
+      n.stop(t + 0.35);
+    },
+    crash(t) {
+      const n = noiseSrc();
+      const bp = ctx!.createBiquadFilter();
+      bp.type = "bandpass";
+      bp.frequency.value = 6000;
+      bp.Q.value = 0.5;
+      const g = ctx!.createGain();
+      env(g, t, 0.3, 1.1);
+      n.connect(bp).connect(g).connect(master);
+      n.start(t);
+      n.stop(t + 1.1);
+    },
+    cowbell(t) {
+      [540, 800].forEach((f) => {
+        const o = osc("square", f);
+        const g = ctx!.createGain();
+        env(g, t, 0.22, 0.25);
+        o.connect(g).connect(master);
+        o.start(t);
+        o.stop(t + 0.25);
+      });
+    },
+    tomlo: (t) => tom(t, 100),
+    tommid: (t) => tom(t, 160),
+    tomhi: (t) => tom(t, 240),
+    zap(t) {
+      const o = osc("sawtooth", 800);
+      o.frequency.exponentialRampToValueAtTime(80, t + 0.15);
+      const g = ctx!.createGain();
+      env(g, t, 0.4, 0.18);
+      o.connect(g).connect(master);
+      o.start(t);
+      o.stop(t + 0.18);
+    },
+    bass(t) {
+      const o = osc("sawtooth", 65.41); // Do2
+      const lp = ctx!.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.value = 420;
+      const g = ctx!.createGain();
+      env(g, t, 0.6, 0.35);
+      o.connect(lp).connect(g).connect(master);
+      o.start(t);
+      o.stop(t + 0.35);
+    },
+    stab(t) {
+      const o = osc("square", 220); // La3
+      const lp = ctx!.createBiquadFilter();
+      lp.type = "lowpass";
+      lp.frequency.setValueAtTime(3000, t);
+      lp.frequency.exponentialRampToValueAtTime(600, t + 0.18);
+      const g = ctx!.createGain();
+      env(g, t, 0.4, 0.2);
+      o.connect(lp).connect(g).connect(master);
+      o.start(t);
+      o.stop(t + 0.2);
+    },
+    chord(t) {
+      [261.63, 329.63, 392.0].forEach((f) => {
+        const o = osc("triangle", f); // Do4 – Mi4 – Sol4
+        const g = ctx!.createGain();
+        env(g, t, 0.22, 0.5);
+        o.connect(g).connect(master);
+        o.start(t);
+        o.stop(t + 0.5);
+      });
+    },
+    laser(t) {
+      const o = osc("sine", 1200);
+      o.frequency.exponentialRampToValueAtTime(200, t + 0.3);
+      const g = ctx!.createGain();
+      env(g, t, 0.35, 0.32);
+      o.connect(g).connect(master);
+      o.start(t);
+      o.stop(t + 0.32);
+    },
+  };
+
+  function tom(t: number, f: number) {
+    const o = osc("sine", f * 1.4);
+    o.frequency.exponentialRampToValueAtTime(f, t + 0.18);
+    const g = ctx!.createGain();
+    env(g, t, 0.6, 0.35);
+    o.connect(g).connect(master);
+    o.start(t);
+    o.stop(t + 0.35);
+  }
+
+  // ── Câblage de l'interface ─────────────────────────────────
+  function initLaunchpad(root: HTMLElement) {
+    if (root.dataset.ready) return;
+    root.dataset.ready = "true";
+
+    const padEls = Array.from(
+      root.querySelectorAll<HTMLButtonElement>(".pad")
+    );
+    const byKey = new Map<string, HTMLButtonElement>();
+    padEls.forEach((el) => {
+      if (el.dataset.key) byKey.set(el.dataset.key, el);
+    });
+
+    function flash(el: HTMLButtonElement) {
+      el.classList.add("is-hit");
+      window.setTimeout(() => el.classList.remove("is-hit"), 130);
+    }
+
+    function play(el: HTMLButtonElement) {
+      ensureAudio();
+      const voice = voices[el.dataset.sound ?? ""];
+      if (voice && ctx) voice(ctx.currentTime);
+      flash(el);
+    }
+
+    // pointerdown = souris + tactile, avec la latence la plus faible.
+    padEls.forEach((el) => {
+      el.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        play(el);
+      });
+    });
+
+    // Jeu au clavier (ignore la répétition auto et les champs de saisie).
+    document.addEventListener("keydown", (e) => {
+      if (e.repeat) return;
+      const target = e.target as HTMLElement;
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+      const el = byKey.get(e.key.toLowerCase());
+      if (el) {
+        e.preventDefault();
+        play(el);
+      }
+    });
+  }
+
+  document
+    .querySelectorAll<HTMLElement>("[data-launchpad]")
+    .forEach(initLaunchpad);
+</script>
