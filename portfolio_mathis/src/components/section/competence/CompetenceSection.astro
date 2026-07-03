@@ -18,6 +18,10 @@ const { blocs = [] } = Astro.props;
     <BigTitle line1='Blocs de ' line2='compétences' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
     <LevelLegend />
     <div class="relative z-10 space-y-6">
-        {blocs.map((bloc, i) => <CompetenceBloc bloc={bloc} index={i} />)}
+        {blocs.map((bloc, i) => (
+            <div data-aos="fade-up">
+                <CompetenceBloc bloc={bloc} index={i} />
+            </div>
+        ))}
     </div>
 </section>

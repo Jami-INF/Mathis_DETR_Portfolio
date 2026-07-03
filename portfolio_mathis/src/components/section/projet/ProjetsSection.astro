@@ -63,7 +63,10 @@ const slugify = (value: string) =>
       const folder = projet.galerie ?? slugify(projet.title);
       return (
         <Fragment>
-          <div class="max-w-7xl mx-auto px-6 py-8 lg:py-14">
+          <div
+            class="max-w-7xl mx-auto px-6 py-8 lg:py-14"
+            data-aos={index % 2 === 1 ? 'fade-left' : 'fade-right'}
+          >
             <ProjetCard
               title={projet.title}
               title2={projet.title2}

@@ -1,1 +1,35 @@
 @import "tailwindcss";
+/* ── Animations globales (DA sticker/pop) ─────────────────────── */
+/* Flottement doux des éléments décoratifs */
+@keyframes float-idle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(3deg); }
+}
+.animate-float { animation: float-idle 7s ease-in-out infinite; }
+
+/* Animation AOS custom : pose de sticker (scale + micro-rotation) */
+[data-aos="sticker-pop"] {
+  opacity: 0;
+  transform: scale(0.9) rotate(-2deg);
+  transition-property: transform, opacity;
+}
+[data-aos="sticker-pop"].aos-animate {
+  opacity: 1;
+  transform: scale(1) rotate(0);
+}
+
+/* Press physique des boutons (hard-shadow qui s'écrase) */
+.btn-press {
+  transition: transform 0.1s ease, box-shadow 0.1s ease;
+}
+.btn-press:active { transform: translateY(2px) scale(0.98); }
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float { animation: none; }
+  [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .btn-press:active { transform: none; }
+}

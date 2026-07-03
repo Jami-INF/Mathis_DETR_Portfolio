@@ -18,8 +18,12 @@ const slug = title.toLowerCase().replace(/\s+/g, "-");
   <BigTitle line1={title} line2='' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
 
   <div class="relative z-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-    {groupes.map((g) => (
-      <article class="rounded-3xl bg-white/90 p-6 ring-1 ring-[#f1ddef] shadow-lg shadow-[#e7a7f4]/20">
+    {groupes.map((g, i) => (
+      <article
+        data-aos="fade-up"
+        data-aos-delay={i * 90}
+        class="rounded-3xl bg-white/90 p-6 ring-1 ring-[#f1ddef] shadow-lg shadow-[#e7a7f4]/20"
+      >
         <h3 class="mb-4 font-display text-lg font-extrabold uppercase tracking-wide text-[#b05ec0]">
           {g.categorie}
         </h3>

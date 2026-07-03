@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import 'aos/dist/aos.css';
 import Navbar from '../components/Navbar.astro';
 import Footer from '../components/Footer.astro';
 interface Props {
@@ -96,5 +97,17 @@ const ogImageURL = new URL(ogImage, Astro.site);
       <slot />
     </main>
     <Footer />
+
+    <script>
+      import AOS from 'aos';
+      AOS.init({
+        once: true,          // chaque élément n'anime qu'une fois
+        duration: 600,
+        easing: 'ease-out',
+        offset: 60,
+        disable: () =>
+          window.matchMedia('(prefers-reduced-motion: reduce)').matches,
+      });
+    </script>
   </body>
 </html>

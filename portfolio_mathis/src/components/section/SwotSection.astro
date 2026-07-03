@@ -6,6 +6,9 @@ import SwotCard from "./../SwotCard.astro";
 import BigTitle from './../text/BigTitle.astro';
 
 import SwotCircle from "./../SwotCircle.astro";
+import FloatingAsset from "./../decor/DessinVolant.astro";
+import EtoileMarron from "./../../assets/element/etoileMarron.png";
+import Fleur from "./../../assets/element/fleur.png";
 
 interface SwotData {
   forces: string[];
@@ -38,7 +41,17 @@ const {
 } = Astro.props;
 ---
 
-<section class="w-full bg-[#f8f6f2] px-4 py-12 sm:px-6 lg:px-10">
+<section class="relative w-full overflow-hidden bg-[#f8f6f2] px-4 py-12 sm:px-6 lg:px-10">
+  <FloatingAsset
+    src={EtoileMarron}
+    alt=""
+    class="right-2 top-4 z-0 w-[52px] rotate-[-10deg] opacity-80 sm:right-8 sm:w-[100px] lg:w-[125px]"
+  />
+  <FloatingAsset
+    src={Fleur}
+    alt=""
+    class="left-2 bottom-8 z-0 w-[48px] rotate-[12deg] opacity-70 sm:left-8 sm:w-[90px] lg:w-[115px]"
+  />
   <div class="mx-auto max-w-6xl">
     <BigTitle line1={title} line2="" sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
 

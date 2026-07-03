@@ -1,4 +1,25 @@
+---
+import FloatingAsset from "./decor/DessinVolant.astro";
+import EtoileRose from "../assets/element/etoileRose.png";
+import Quotes from "../assets/element/quotes.png";
+import Nuage from "../assets/element/nuage.png";
+---
 <footer class="relative overflow-hidden bg-[#6f5647] text-[#f8f6f2]" id="contact">
+  <FloatingAsset
+    src={EtoileRose}
+    alt=""
+    class="right-4 top-8 z-0 w-[56px] rotate-[14deg] opacity-70 sm:right-12 sm:w-[110px] lg:right-24 lg:w-[140px]"
+  />
+  <FloatingAsset
+    src={Quotes}
+    alt=""
+    class="left-3 top-6 z-0 w-[44px] rotate-[-8deg] opacity-60 sm:left-10 sm:w-[85px] lg:w-[105px]"
+  />
+  <FloatingAsset
+    src={Nuage}
+    alt=""
+    class="right-8 bottom-16 z-0 w-[52px] rotate-[-6deg] opacity-60 sm:bottom-20 sm:w-[100px] lg:w-[125px]"
+  />
   <div
     class="absolute inset-0 opacity-[0.08]"
     style="background-image:

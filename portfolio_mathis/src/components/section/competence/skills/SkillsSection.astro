@@ -20,6 +20,10 @@ const etoile = variant === "brun" ? EtoileMarron : EtoileRose;
   />
   <BigTitle line1={title} line2='' sizeClass="text-[2.5rem] sm:text-[3.5rem] lg:text-[4.5rem]"/>
   <div class="relative z-10 grid gap-8 sm:grid-cols-3 sm:gap-8 lg:gap-10">
-    {skills.map((skill) => <SkillCard skill={skill} variant={variant} />)}
+    {skills.map((skill, i) => (
+      <div data-aos="fade-up" data-aos-delay={i * 90}>
+        <SkillCard skill={skill} variant={variant} />
+      </div>
+    ))}
   </div>
 </section>
