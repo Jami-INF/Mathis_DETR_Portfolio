@@ -5,15 +5,28 @@ interface Props {
   src: any;
   alt?: string;
   class?: string;
+  /** Type d'animation : float (défaut) | float-spin | spin | wobble | breathe | drift */
+  anim?: "float" | "float-spin" | "spin" | "wobble" | "breathe" | "drift";
 }
 
 const {
   src,
   alt = "",
   class: className = "",
+  anim = "float",
 } = Astro.props;
+
+// Chaque valeur de `anim` pointe vers sa classe d'animation CSS (global.css).
+const animClass = {
+  float: "animate-float",
+  "float-spin": "animate-float-spin",
+  spin: "animate-spin-slow",
+  wobble: "animate-wobble",
+  breathe: "animate-breathe",
+  drift: "animate-drift",
+}[anim];
 ---
 
 <div class={`absolute ${className}`}>
-  <Image src={src} alt={alt} class="animate-float h-auto w-full" />
+  <Image src={src} alt={alt} class={`${animClass} h-auto w-full`} />
 </div>
