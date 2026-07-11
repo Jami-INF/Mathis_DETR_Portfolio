@@ -37,12 +37,28 @@ const pageTitle = title
 // URL canonique et OG calculées à partir de la page courante.
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const ogImageURL = new URL(ogImage, Astro.site);
+
+// ── Google Tag Manager ───────────────────────────────────────
+// Identifiant du conteneur GTM (format « GTM-XXXXXXX »).
+// Laisse "" pour désactiver totalement le suivi (aucun script chargé).
+const GTM_ID = "GTM-WKLRRG6C";
 ---
 <!doctype html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    {/* Google Tag Manager — le plus haut possible dans le <head> */}
+    {GTM_ID && (
+      <script is:inline define:vars={{ GTM_ID }}>
+        (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer',GTM_ID);
+      </script>
+    )}
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
@@ -91,6 +107,10 @@ const ogImageURL = new URL(ogImage, Astro.site);
   </head>
 
   <body class="m-0 min-h-screen w-full bg-[#f8f6f2]">
+    {/* Google Tag Manager (noscript) — juste après <body> */}
+    {GTM_ID && (
+      <noscript set:html={`<iframe src="https://www.googletagmanager.com/ns.html?id=${GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe>`} />
+    )}
     <Navbar />
 
     <main class="pt-10">
