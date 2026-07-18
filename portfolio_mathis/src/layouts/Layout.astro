@@ -49,17 +49,22 @@ const GA_ID = "G-Y6R9HK6CG9";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    {/* Google Analytics (GA4) — le plus haut possible dans le <head> */}
+    {/* Google Analytics (GA4) — la file dataLayer est prête tout de suite,
+        mais gtag.js est chargé après le rendu pour ne pas concurrencer le LCP. */}
     {GA_ID && (
-      <>
-        <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}></script>
-        <script is:inline define:vars={{ GA_ID }}>
-          window.dataLayer = window.dataLayer || [];
-          function gtag() { dataLayer.push(arguments); }
-          gtag('js', new Date());
-          gtag('config', GA_ID);
-        </script>
-      </>
+      <script is:inline define:vars={{ GA_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', GA_ID);
+        // Chargement différé du script pour libérer le chemin critique.
+        window.addEventListener('load', function () {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GA_ID;
+          document.head.appendChild(s);
+        });
+      </script>
     )}
 
     <title>{pageTitle}</title>
