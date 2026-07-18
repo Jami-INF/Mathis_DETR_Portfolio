@@ -31,7 +31,8 @@ const {
         <Image
           src={src}
           alt={alt}
-          width={900}
+          widths={[260, 420, 520, 840]}
+          sizes="(max-width: 700px) 250px, 400px"
           quality={72}
           class="block aspect-[4/5] w-full rounded-[18px] object-cover"
           loading={priority ? "eager" : "lazy"}
