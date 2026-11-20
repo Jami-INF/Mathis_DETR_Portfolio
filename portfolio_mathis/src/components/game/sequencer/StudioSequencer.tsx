@@ -144,7 +144,7 @@ export default function StudioSequencer() {
       </div>
 
       <p class="mt-4 text-center text-[0.7rem] text-white/40">
-        Clique les cases pendant la lecture — la boucle se met à jour en direct. 🔊 Monte le son !
+        Clique les cases pendant la lecture : la boucle se met à jour en direct. 🔊 Monte le son !
       </p>
     </div>
   );

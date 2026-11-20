@@ -1,4 +1,4 @@
-// Moteur audio du séquenceur — chargé dynamiquement au premier Play.
+// Moteur audio du séquenceur, chargé dynamiquement au premier Play.
 // Une Tone.Sequence en "16n" lit le pattern via getter (édition à chaud),
 // les voix reçoivent le `time` du scheduler (sample-accurate), et la
 // synchro du playhead passe par Tone.Draw (calée sur l'horloge audio).
@@ -9,7 +9,7 @@ let voices: Voice[] = [];
 let seq: Tone.Sequence<number> | null = null;
 let meter: Tone.Meter | null = null;
 
-// Niveau sonore global lissé (0..1) — lu par la visualisation en rAF.
+// Niveau sonore global lissé (0..1), lu par la visualisation en rAF.
 export function getLevel(): number {
   if (!meter) return 0;
   const v = meter.getValue();

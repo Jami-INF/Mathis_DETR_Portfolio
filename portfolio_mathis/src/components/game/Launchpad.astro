@@ -1,6 +1,6 @@
 ---
 // src/components/game/Launchpad.astro
-// Mini launchpad — 16 pads, sons 100% synthétisés via l'API Web Audio.
+// Mini launchpad : 16 pads, sons 100% synthétisés via l'API Web Audio.
 // Aucune dépendance, aucun fichier son : tout est généré par le navigateur.
 // Le <script> en bas est déjà du JS côté client (Astro le bundle tout seul,
 // comme GalerieSection). Pas besoin de directive client:* (réservée aux
@@ -300,7 +300,7 @@ const pads = [
     },
     chord(t) {
       [261.63, 329.63, 392.0].forEach((f) => {
-        const o = osc("triangle", f); // Do4 – Mi4 – Sol4
+        const o = osc("triangle", f); // Do4, Mi4, Sol4
         const g = ctx!.createGain();
         env(g, t, 0.22, 0.5);
         o.connect(g).connect(master);

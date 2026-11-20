@@ -1,11 +1,11 @@
 # ════════════════════════════════════════════════════════════════
-#  PROJETS  —  page « Mes projets »
+#  PROJETS : page « Mes projets »
 #  Chaque projet commence par un tiret « - ». Pour en ajouter un,
 #  recopie un bloc existant et change les valeurs.
 #  ⚠️ Garde l'indentation (les espaces en début de ligne) identique.
 # ════════════════════════════════════════════════════════════════
 
-- id: hall-32                 # identifiant technique — ne pas modifier
+- id: hall-32                 # identifiant technique, ne pas modifier
   ordre: 1                    # ordre d'affichage (1 = en premier)
   titre: Hall 32              # titre affiché (1re ligne, en gros)
   titre2: ""                  # 2e ligne du titre (laisser "" si aucune)

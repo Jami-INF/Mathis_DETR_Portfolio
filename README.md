@@ -1,4 +1,4 @@
-# Portfolio — Mathis Detroussat
+# Portfolio de Mathis Detroussat
 
 Site portfolio conçu et développé pour **Mathis Detroussat**, chargé de projet événementiel, afin de présenter son parcours, ses projets, ses événements et ses compétences.
 
@@ -26,7 +26,7 @@ Le contenu le design (parcours, projets, photos, style) est celui de Mathis ; la
 | Framework | **[Astro](https://astro.build) 6** | Génère un site **statique** (HTML), zéro JS inutile envoyé au navigateur → chargement très rapide, idéal SEO. |
 | Styling | **Tailwind CSS 4** (via `@tailwindcss/vite`) | Design system cohérent, responsive rapide à écrire, purge automatique du CSS. |
 | Composants | **Astro components** (`.astro`) | Sections réutilisables et typées, rendues côté build. |
-| Interactivité | **TypeScript / JS vanilla** | Lightbox galerie, bouton « voir plus », menu mobile, animations au scroll — sans framework lourd. |
+| Interactivité | **TypeScript / JS vanilla** | Lightbox galerie, bouton « voir plus », menu mobile, animations au scroll, sans framework lourd. |
 | Images | **[sharp](https://sharp.pixelplumbing.com/)** + composant `<Image>` d'Astro | Compression, redimensionnement et filigrane automatisés (voir plus bas). |
 | Sitemap | **@astrojs/sitemap** | Génération automatique du `sitemap-index.xml`. |
 | Hébergement | **GitHub Pages** | Gratuit, fiable, CDN intégré. |
@@ -47,13 +47,13 @@ Le contenu le design (parcours, projets, photos, style) est celui de Mathis ; la
 
 ## 🖼️ Pipeline images (compression + filigrane)
 
-Les photos brutes pesaient **~570 Mo** (16–32 Mo l'unité). Un script Node ([`scripts/watermark-images.mjs`](portfolio_mathis/scripts/watermark-images.mjs)) automatise tout via **sharp** :
+Les photos brutes pesaient **~570 Mo** (16 à 32 Mo l'unité). Un script Node ([`scripts/watermark-images.mjs`](portfolio_mathis/scripts/watermark-images.mjs)) automatise tout via **sharp** :
 
 - redimensionnement à **2500 px** max,
 - **filigrane de crédit** gravé dans l'image (« © Mathis Detroussat — mathis-detroussat.fr »),
 - **idempotent** (manifeste pour ne pas filigraner deux fois) + **sauvegarde des originaux**.
 
-➡️ Résultat : **570 Mo → ~97 Mo** de sources, puis Astro génère à la livraison des **WebP dimensionnés par usage** (vignettes ~80–150 Ko au lieu de plusieurs Mo). Temps de build divisé par ~6.
+➡️ Résultat : **570 Mo → ~97 Mo** de sources, puis Astro génère à la livraison des **WebP dimensionnés par usage** (vignettes ~80 à 150 Ko au lieu de plusieurs Mo). Temps de build divisé par ~6.
 
 ---
 
@@ -124,4 +124,4 @@ Le code de ce site est **open source**. Le contenu éditorial et les photographi
 
 ## 👤 Auteur
 
-Conception & développement : **Jami Infante** — [LinkedIn](https://www.linkedin.com/in/jami-infante/)
+Conception & développement : **Jami Infante** · [LinkedIn](https://www.linkedin.com/in/jami-infante/)
